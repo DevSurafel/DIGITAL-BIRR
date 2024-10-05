@@ -67,7 +67,7 @@ const TaskWhatsapp = ({ showModal, setShowModal }) => {
 
 
   const handleTaskLinkClick = () => {
-    window.open("https://t.me/+p9ThUnIaaV0wYzZk");
+    window.open("https://t.me/+q-MugLXE6kZiNTU8");
 
     setTimeout(() => {
       setShowTaskButton(false);
@@ -84,7 +84,7 @@ const TaskWhatsapp = ({ showModal, setShowModal }) => {
     }
 
     const response = await fetch(
-      `https://api.telegram.org/bot7855740816:AAFNYuqct3l3uSG18uW_3IMPXKuSHw5LC5k/getChatMember?chat_id=-1001379581156&user_id=${id}`
+      `https://api.telegram.org/bot7855740816:AAFNYuqct3l3uSG18uW_3IMPXKuSHw5LC5k/getChatMember?chat_id=-1002033347065&user_id=${id}`
     );
     const data = await response.json();
 
