@@ -5,7 +5,7 @@ import "./fire.scss";
 import { AnimatePresence } from "framer-motion";
 import Footer from "./Components/Footer";
 import { UserProvider } from "./context/userContext";
-
+import DeviceCheck from "./Components/DeviceCheck"; // Import DeviceCheck
 
 const tele = window.Telegram.WebApp;
 const Home = () => {
@@ -44,23 +44,22 @@ const Home = () => {
 
   return (
     <>
-
-      <div className="flex justify-center w-full">
+      <DeviceCheck>
         <div className="flex justify-center w-full">
-          <div className="flex flex-col w-full pt-8 space-y-3">
-
-            <UserProvider>
-              <AnimatePresence mode="wait">
-                <Outlet />
-              </AnimatePresence>
-            </UserProvider>
-            <div id="footermain" className={`flex flex-col bg-[#1a1f2e] space-y-6 fixed bottom-0 py-6 left-0 right-0 justify-center items-center px-5`}>
-
-              <Footer />
+          <div className="flex justify-center w-full">
+            <div className="flex flex-col w-full pt-8 space-y-3">
+              <UserProvider>
+                <AnimatePresence mode="wait">
+                  <Outlet />
+                </AnimatePresence>
+              </UserProvider>
+              <div id="footermain" className="flex flex-col bg-[#1a1f2e] space-y-6 fixed bottom-0 py-6 left-0 right-0 justify-center items-center px-5">
+                <Footer />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DeviceCheck>
     </>
   );
 };
