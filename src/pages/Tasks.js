@@ -49,8 +49,9 @@ const Tasks = () => {
   const [showLevels, setShowLevels] = useState(false);
   // eslint-disable-next-line
   const [message, setMessage] = useState("");
-  const taskID = "task_tele_1"; // Assign a unique ID to this task
-  const taskID2 = "task_tele_2"; // Assign a unique ID to this task
+  const taskID = "task_tele"; // Assign a unique ID to this task
+  const taskID2 = "task_what"; // Assign a unique ID to this task
+  const taskID3 = "task_tw_1"; // Assign a unique ID to this task
 
 
   const [tasks, setTasks] = useState([]);
@@ -105,7 +106,9 @@ const Tasks = () => {
     try {
       const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
       const userTaskDocRef2 = doc(db, "userTasks", `${id}_${taskId2}`);
-      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2);
+      const userTaskDocRef3 = doc(db, "userTasks", `${id}_${taskId3}`);
+
+      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2, userTaskDocRef3);
       if (docSnap.exists()) {
         return docSnap.data().completed;
       } else {
