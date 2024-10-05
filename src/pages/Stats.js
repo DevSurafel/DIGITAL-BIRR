@@ -162,7 +162,7 @@ const Stats = () => {
               <div className="p-4 flex justify-center items-center">
                 <img
                   src={veicles[current].image}
-                  alt=""
+                  alt="scr"
                   className="h-[150px] object-contain"
                 />
               </div>
