@@ -1,4 +1,3 @@
-//the code is this one but you're talking about other things
 
 import React, { useEffect, useState } from "react";
 import Animate from "../Components/Animate";
@@ -51,7 +50,8 @@ const Tasks = () => {
   // eslint-disable-next-line
   const [message, setMessage] = useState("");
   const taskID = "task_tele_1"; // Assign a unique ID to this task
-  const taskID2 = "task_tw_1"; // Assign a unique ID to this task
+  const taskID2 = "task_tele_2"; // Assign a unique ID to this task
+
 
   const [tasks, setTasks] = useState([]);
 
