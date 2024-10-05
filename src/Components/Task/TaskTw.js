@@ -67,7 +67,7 @@ const TaskTw = ({ showModal, setShowModal }) => {
 
 
   const handleTaskLinkClick = () => {
-    window.open("https://x.com/RockiPoint?t=-yVqD1UvcWkjgN6Zi0Np7A&s=09");
+    window.open("https://t.me/+p9ThUnIaaV0wYzZk");
 
     setTimeout(() => {
       setShowTaskButton(false);
@@ -84,7 +84,7 @@ const TaskTw = ({ showModal, setShowModal }) => {
     }
 
     const response = await fetch(
-      `https://api.telegram.org/bot7322919680:AAHY0Q3PjjWzHELk4SIN0x_sFXwoOATHaok/getChatMember?chat_id=-1002317598425&user_id=${id}`
+      `https://api.telegram.org/bot7855740816:AAFNYuqct3l3uSG18uW_3IMPXKuSHw5LC5k/getChatMember?chat_id=-1001379581156&user_id=${id}`
     );
     const data = await response.json();
 
