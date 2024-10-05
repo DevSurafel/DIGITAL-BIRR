@@ -67,7 +67,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
 
 
   const handleTaskLinkClick = () => {
-    window.open("https://t.me/Kryptoblockchain");
+    window.open("https://t.me/+BJZMDleqN0ljZThl");
 
     setTimeout(() => {
       setShowTaskButton(false);
@@ -84,7 +84,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
     }
 
     const response = await fetch(
-      `https://api.telegram.org/bot8112834265:AAFsAbAYHWyLGsG2LvvCivuxTUe8p6Ytibs/getChatMember?chat_id=-1002436643404&user_id=${id}`
+      `https://api.telegram.org/bot7855740816:AAFNYuqct3l3uSG18uW_3IMPXKuSHw5LC5k/getChatMember?chat_id=-1002157796678&user_id=${id}`
     );
     const data = await response.json();
 
