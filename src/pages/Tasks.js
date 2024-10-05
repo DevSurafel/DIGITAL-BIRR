@@ -106,7 +106,7 @@ const Tasks = () => {
     try {
       const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
       const userTaskDocRef2 = doc(db, "userTasks", `${id}_${taskId2}`);
-      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2, userTaskDocRef3);
+      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2);
       if (docSnap.exists()) {
         return docSnap.data().completed;
       } else {
