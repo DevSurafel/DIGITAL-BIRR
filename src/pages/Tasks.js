@@ -50,8 +50,7 @@ const Tasks = () => {
   // eslint-disable-next-line
   const [message, setMessage] = useState("");
   const taskID = "task_tele"; // Assign a unique ID to this task
-  const taskID2 = "task_what"; // Assign a unique ID to this task
-  const taskID3 = "task_tw_1"; // Assign a unique ID to this task
+  const taskID2 = "task_tw_1"; // Assign a unique ID to this task
 
 
   const [tasks, setTasks] = useState([]);
