@@ -1,4 +1,4 @@
-//this is my ./pages/Tasks file.. is there any error you can modify?
+//the code is this one but you're talking about other things
 
 import React, { useEffect, useState } from "react";
 import Animate from "../Components/Animate";
@@ -407,7 +407,10 @@ const Tasks = () => {
                   </div>
                 </div>
 
-                {/* <div
+
+
+
+                {<div
                   onClick={taskWhatsapp}
                   className="bg-cards rounded-[10px] p-[14px] flex justify-between items-center"
                 >
@@ -440,11 +443,11 @@ const Tasks = () => {
                       </>
                     )}
                   </div>
-                </div> */}
+                </div> }
 
 
 
-                {/* <div
+                {<div
                   onClick={taskTw}
                   className="bg-cards rounded-[10px] p-[14px] flex justify-between items-center"
                 >
@@ -477,7 +480,10 @@ const Tasks = () => {
                     )}
                   </div>
 
-                </div> */}
+                </div> }
+
+
+
 
 
                 {/*  */}
