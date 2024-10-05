@@ -45,6 +45,8 @@ const Tasks = () => {
   const [showTaskTelegram, setShowTaskTelegram] = useState(false);
   const [showTaskTw, setShowTaskTw] = useState(false);
   const [showWhatsapp, setShowWhatsapp] = useState(false);
+  const [showChecko, setShowChecko] = useState(false);
+
   // eslint-disable-next-line
   const [claimLevel, setClaimLevel] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
@@ -52,6 +54,8 @@ const Tasks = () => {
   const [message, setMessage] = useState("");
   const taskID = "task_tele"; // Assign a unique ID to this task
   const taskID2 = "task_tw_1"; // Assign a unique ID to this task
+  const taskID3 = "task_check"; // Assign a unique ID to this task
+
 
 
   const [tasks, setTasks] = useState([]);
@@ -84,7 +88,7 @@ const Tasks = () => {
   };
 
   const checko = () => {
-    setShowTaskTw(true);
+    setShowChecko(true);
     document.getElementById("footermain").style.zIndex = "50";
   };
 
