@@ -7,7 +7,7 @@ const ActiveButton = ({ current, image, position, setCurrent }) => {
       onClick={setCurrent}
       className={`w-14 h-14 p-4 flex justify-center items-center ${current === position ? "bg-[#34C8E8]" : "bg-[#353F54]"} rounded-md`}
     >
-      <img src={image} alt="" className="h-full object-contain" />
+      <img src={image} alt="act" className="h-full object-contain" />
     </button>
   );
 }
