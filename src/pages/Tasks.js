@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Animate from "../Components/Animate";
 import { Outlet } from "react-router-dom";
@@ -25,7 +24,6 @@ import MilestoneRewards from "../Components/MilestoneRewards";
 import ReferralRewards from "../Components/Rewards";
 import TaskTelegram from "../Components/Task/TaskTelegram";
 import TaskTw from "../Components/Task/TaskTw";
-import Checko from "../Components/Task/Checko";
 import TaskWhatsapp from "../Components/Task/TaskWhatsapp";
 
 const Tasks = () => {
@@ -45,18 +43,13 @@ const Tasks = () => {
   const [showTaskTelegram, setShowTaskTelegram] = useState(false);
   const [showTaskTw, setShowTaskTw] = useState(false);
   const [showWhatsapp, setShowWhatsapp] = useState(false);
-  const [showChecko, setShowChecko] = useState(false);
-
   // eslint-disable-next-line
   const [claimLevel, setClaimLevel] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
   // eslint-disable-next-line
   const [message, setMessage] = useState("");
-  const taskID = "task_tele"; // Assign a unique ID to this task
+  const taskID = "task_tele_1"; // Assign a unique ID to this task
   const taskID2 = "task_tw_1"; // Assign a unique ID to this task
-  const taskID3 = "task_check"; // Assign a unique ID to this task
-
-
 
   const [tasks, setTasks] = useState([]);
 
@@ -84,11 +77,6 @@ const Tasks = () => {
 
   const taskTw = () => {
     setShowTaskTw(true);
-    document.getElementById("footermain").style.zIndex = "50";
-  };
-
-  const checko = () => {
-    setShowChecko(true);
     document.getElementById("footermain").style.zIndex = "50";
   };
 
@@ -417,10 +405,7 @@ const Tasks = () => {
                   </div>
                 </div>
 
-
-
-
-                {<div
+                {/* <div
                   onClick={taskWhatsapp}
                   className="bg-cards rounded-[10px] p-[14px] flex justify-between items-center"
                 >
@@ -453,7 +438,7 @@ const Tasks = () => {
                       </>
                     )}
                   </div>
-                </div> }
+                </div> */}
 
 
 
@@ -493,57 +478,6 @@ const Tasks = () => {
                 </div> }
 
 
-
-
-
-
-
-                {<div
-                  onClick={checko}
-                  className="bg-cards rounded-[10px] p-[14px] flex justify-between items-center"
-                >
-                  <div className="flex items-center flex-1 space-x-2">
-                    <div className="">
-                      <img src={require('../images/taskbook.png')} alt="tasks" className="w-[50px]" />
-                    </div>
-                    <div className="flex flex-col space-y-1">
-                      <span className="font-semibold">Follow us on check</span>
-                      <div className="flex items-center space-x-1">
-                        <span className="w-[20px] h-[20px]">
-                          <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
-                        </span>
-                        <span className="font-medium">50 000</span>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-                  <div className="">
-                    {taskCompleted2 ? (
-                      <>
-                        <IoCheckmarkSharp className="w-[20px] h-[20px] text-[#5bd173] mt-[2px]" />
-                      </>
-                    ) : (
-                      <>
-                        <MdOutlineKeyboardArrowRight className="w-[20px] h-[20px] text-[#e0e0e0] mt-[2px]" />
-                      </>
-                    )}
-                  </div>
-
-                </div> }
-
-
-
-
-
-
-
-
-
-
-
-
                 {/*  */}
               </div>
 
@@ -574,11 +508,7 @@ const Tasks = () => {
               showModal={showWhatsapp}
               setShowModal={setShowWhatsapp}
             />
-            <TaskTw showModal={showTaskTw} 
-            setShowModal={setShowTaskTw} />
-             
-             <Checko showModal={showChecko} 
-            setShowModal={setShowChecko} />
+            <TaskTw showModal={showTaskTw} setShowModal={setShowTaskTw} />
 
             <ClaimLeveler
               claimLevel={claimLevel}
