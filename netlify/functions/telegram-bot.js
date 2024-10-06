@@ -14,7 +14,7 @@ bot.start((ctx) => {
   const user = ctx.message.from;
   const userName = user.username ? `@${user.username}` : user.first_name;
 
-    return ctx.replyWithMarkdown(`*Hey ${userName}, Welcome to [**$BIRR**](https://t.me/+p9ThUnIaaV0wYzZk)!* 
+  return ctx.replyWithMarkdown(`*Hey ${userName}, Welcome to [$BIRR](${urlSent})*
 
 Start building your financial future today!`, {
     reply_markup: {
@@ -43,4 +43,4 @@ exports.handler = async (event) => {
 
 // Set webhook (this should be done once, not in the function)
 // Use this in your local environment or a separate setup script:
-// bot.telegram.setWebhook(`https://your-netlify-site.netlify.app/.netlify/functions/telegram-bot`);
+// bot.telegram.setWebhook('https://your-netlify-site.netlify.app/.netlify/functions/telegram-bot');
