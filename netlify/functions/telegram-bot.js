@@ -11,12 +11,12 @@ bot.start((ctx) => {
   const user = ctx.message.from; 
   const userName = user.username ? `@${user.username}` : user.first_name; 
 
-  return ctx.replyWithMarkdown(`*Hey ${userName}, Welcome to [$BIRR](https://t.me/+p9ThUnIaaV0wYzZk)!* 
-
-Start building your financial future today!`, { 
+  return ctx.replyWithMarkdown(`*Hey ${userName}, Welcome to [$BIRR](https://t.me/+p9ThUnIaaV0wYzZk)!*\n\n` + 
+                               `Start building your financial future today!\n\n` + 
+                               `Invite your friends to join the fun and watch your rewards multiply as you rise to the top together!`, { 
     reply_markup: { 
       inline_keyboard: [ 
-        [{ text: "👋 Start now!", web_app: { url: urlSent } }], 
+        [{ text: "Start now!", web_app: { url: urlSent } }], 
         [{ text: "Join our Community", url: community_link }] 
       ] 
     } 
