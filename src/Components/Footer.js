@@ -1,7 +1,7 @@
 import React from "react";
 import boost from "../images/boost.webp";
 import tasks from "../images/tasks.webp";
-import lot from '../images/lot.svg'
+import lot from '../images/lot.webp'
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -31,7 +31,7 @@ ${isActive
         }}
       >
         <img src={require('../images/stats.png')} className="w-[32px] -mb-1" alt="ref" />
-        <span className="font-medium">Inside</span>
+        <span className="font-medium">Top</span>
       </NavLink>
       <NavLink
         to="/tasks"
