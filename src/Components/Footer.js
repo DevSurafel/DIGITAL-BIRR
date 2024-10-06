@@ -113,7 +113,9 @@ ${isActive
     `;
         }}
       >
-        <img src={lot} className="w-[24px]" alt="stats" />
+        
+        <img src={require('../images/lot.webp')} className="w-[28px] -mb-[2px]" alt="aird" />
+        
         <span className="font-medium">Airdrop</span>
       </NavLink>
     </div>
