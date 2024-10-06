@@ -1,7 +1,7 @@
 import React from "react";
 import boost from "../images/boost.webp";
 import tasks from "../images/tasks.webp";
-import lot from '../images/lot.webp'
+import lot from '../images/lot.webp';
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -114,8 +114,7 @@ ${isActive
         }}
       >
         
-        <img src={require('../images/lot.webp')} className="w-[28px] -mb-[2px]" alt="aird" />
-        
+        <img src={lot} className="w-[28px] -mb-[2px]" alt="lot" />
         <span className="font-medium">Airdrop</span>
       </NavLink>
     </div>
