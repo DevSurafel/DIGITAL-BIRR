@@ -16,7 +16,7 @@ const veicles = [
     description: (
       <>
         <p className="text-white/60 text-base">Get ready to shift your luck into high gear!</p>
-        <p className="text-white/60 text-base">An airdrop is when tokens are distributed directly to players' wallets. These tokens will be available for trading on major exchanges, giving you the option to either sell or hold onto them.Right now, we're in the mining phase, where players can accumulate more $BIRR in preparation for the airdrop.Stay tuned for the official airdrop date, which will be announced soon in our Telegram channel.</p>
+        <p className="text-white/60 text-base">An airdrop distributes tokens to players' wallets, which can be traded on major exchanges. You can choose to sell or hold. We're in the mining phase where players earn more $BIRR for the airdrop. The airdrop date will be announced soon in our Telegram channel</p>
         <p className="text-white/60 text-base">#StayTuned</p>
       </>
     )
