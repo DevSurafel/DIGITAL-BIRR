@@ -12,7 +12,7 @@ const veicles = [
     value: "250",
     image: Cart,
     heart: true,
-    title: <strong className="text-white text-[17px]">COMING SOON!</strong>,
+    title: <strong className="text-white text-[15px]">COMING SOON!💰</strong>,
     description: (
       <>
         <p className="text-white/60 text-base">Get ready to shift your luck into high gear!</p>
@@ -187,7 +187,7 @@ const Stats = () => {
 
           <div className="mt-8">
             <span className="text-[#3CA4EB] bg-[#323B4F] flex justify-center items-center rounded-md w-32 h-12">
-              Description
+              AIRDROP 💳
             </span>
             <div className="mt-6 flex flex-col gap-2">
               {veicles[current].title}
