@@ -14,7 +14,7 @@ bot.start((ctx) => {
   const user = ctx.message.from;
   const userName = user.username ? `@${user.username}` : user.first_name;
 
-  return ctx.replyWithMarkdown(`*Hey ${userName}, Welcome to [**$BIRR**](https://t.me/+p9ThUnIaaV0wYzZk)!* 
+  return ctx.replyWithMarkdown(`*Hey ${userName}, Welcome to { text: "$BIRR", web_app: { url: urlSent } }
 Tap into the future of finance! \n\n
 Start building your financial future today!`, {
     reply_markup: {
