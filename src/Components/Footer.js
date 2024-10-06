@@ -114,7 +114,7 @@ ${isActive
         }}
       >
         <img src={lot} className="w-[24px]" alt="stats" />
-        <span className="font-medium">Lott</span>
+        <span className="font-medium">Airdrop</span>
       </NavLink>
     </div>
   );
