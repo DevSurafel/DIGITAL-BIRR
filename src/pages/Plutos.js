@@ -11,7 +11,7 @@ import flash from "../images/flash.webp";
 import { IoCheckmarkCircle, IoClose } from 'react-icons/io5';
 import ref from '../images/ref.webp';
 import { NavLink, useNavigation } from 'react-router-dom';
-import lot from '../images/lot.svg'
+import lot from '../images/lot.webp'
 const slideUp = keyframes`
   0% {
     opacity: 1;
