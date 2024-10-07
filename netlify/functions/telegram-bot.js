@@ -7,7 +7,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const welcomeMessage = (user) => {
   const userName = user.username ? `@${user.username}` : user.first_name;
-  return `Hey ${userName}, Welcome to [**$BIRR**](${community_link})!\n\n` +
+  return `Hey ${userName}, Welcome to [$BIRR](${community_link})!\n\n` +
     "Start building your financial future today!\n\n" +
     "Invite your friends to join the fun and watch your rewards multiply as you rise to the top together!";
 };
@@ -28,14 +28,20 @@ const createReplyMarkup = (startPayload) => {
 bot.start((ctx) => {
   const startPayload = ctx.startPayload;
   const user = ctx.message.from;
-  return ctx.replyWithMarkdown(welcomeMessage(user), createReplyMarkup(startPayload));
+  return ctx.replyWithMarkdown(welcomeMessage(user), { 
+    disable_web_page_preview: true,  // Disable link preview
+    ...createReplyMarkup(startPayload) 
+  });
 });
 
 // Respond to any message sent to the bot
 bot.on('message', (ctx) => {
   const startPayload = ctx.startPayload || ''; // You can customize this if needed
   const user = ctx.message.from;
-  return ctx.replyWithMarkdown(welcomeMessage(user), createReplyMarkup(startPayload));
+  return ctx.replyWithMarkdown(welcomeMessage(user), { 
+    disable_web_page_preview: true,  // Disable link preview
+    ...createReplyMarkup(startPayload) 
+  });
 });
 
 exports.handler = async (event) => {
