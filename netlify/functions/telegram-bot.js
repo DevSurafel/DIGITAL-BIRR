@@ -16,14 +16,15 @@ bot.start((ctx) => {
   const userName = user.username ? `@${user.username}` : user.first_name;
  
   console.log(`Sending welcome message to ${userName}`);
-  return ctx.replyWithMarkdown(`*Hey ${userName}, Welcome to [**$BIRR**](${community_link})!*  
-Start building your financial future today!`, {
+  return ctx.replyWithMarkdownV2(`*Hey ${userName}, Welcome to* [\\$BIRR](${urlSent})\\!  
+Start building your financial future today\\!`, {
     reply_markup: {
       inline_keyboard: [
         [{ text: "Start now!", web_app: { url: urlSent } }],
         [{ text: "Join our Community", url: community_link }]
       ]
-    }
+    },
+    disable_web_page_preview: true
   });
 });
 
