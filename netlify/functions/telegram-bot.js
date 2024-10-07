@@ -24,7 +24,7 @@ const createReplyMarkup = (startPayload) => {
   };
 };
 
-// Respond to /start command
+// Respond to /start cmd
 bot.start((ctx) => {
   const startPayload = ctx.startPayload;
   const user = ctx.message.from;
