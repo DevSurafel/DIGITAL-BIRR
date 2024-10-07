@@ -4,7 +4,7 @@ const ClaimLeveler = ({claimLevel, setClaimLevel}) => {
 
   // eslint-disable-next-line 
   const openLink = () => {
-    window.open("https://t.me/chris_lev11");
+    window.open("https://t.me/+p9ThUnIaaV0wYzZk");
 
 
   };
