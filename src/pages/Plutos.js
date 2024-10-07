@@ -524,7 +524,7 @@ const Plutos = () => {
                 <img src={ref} className="w-[30px] ml-2" />
                 <button
                   onClick={() => { setShowInvitation(true) }}
-                  className="flex items-center justify-center   text-white font-normal py-1 text-[17px] rounded-md w-full>
+                  className="flex items-center justify-center   text-white font-normal py-1 text-[17px] rounded-md w-full">
                   Invite
                   <MdOutlineKeyboardArrowRight className="w-[30px] h-[30px] mr-1 text-[#9d99a9]" />
                 </button>
