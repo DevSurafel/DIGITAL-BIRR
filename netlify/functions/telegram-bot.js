@@ -1,27 +1,28 @@
 const { Telegraf, Markup } = require("telegraf");
 
 // Constants for external links
-const web_link = "https://digital-birr.netlify.app/";
 const community_link = "https://t.me/+p9ThUnIaaV0wYzZk";
 
 // Initialize the bot with the token from environment variables
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 // Handler for the /start command
-bot.start((ctx) => {
+bot.start(async (ctx) => {
   console.log('Start command received');
-  const startPayload = ctx.startPayload;
-  const urlSent = `${web_link}?start=${startPayload}`;
   const user = ctx.message.from;
   const userName = user.username ? `@${user.username}` : user.first_name;
+
+  // Get bot information to construct the Mini App link
+  const botInfo = await ctx.telegram.getMe();
+  const miniAppLink = `https://t.me/${botInfo.username}/app`;
  
   console.log(`Sending welcome message to ${userName}`);
   return ctx.replyWithHTML(
-    `Hey ${userName}, Welcome to <a href="${urlSent}" target="_blank">$BIRR</a>!\n` +
+    `Hey ${userName}, Welcome to <a href="${miniAppLink}">$BIRR</a>!\n` +
     `Start building your financial future today!`,
     Markup.inlineKeyboard([
-      Markup.button.webApp("Start now!", urlSent),
-      Markup.button.url("Join our Community", community_link)
+      [Markup.button.webApp("Start now!", miniAppLink)],
+      [Markup.button.url("Join our Community", community_link)]
     ])
   );
 });
