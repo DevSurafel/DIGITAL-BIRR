@@ -1,4 +1,4 @@
-const { Telegraf } = require("telegraf");
+const { Telegraf, Markup } = require("telegraf");
 
 // Constants for external links
 const web_link = "https://digital-birr.netlify.app/";
@@ -16,16 +16,14 @@ bot.start((ctx) => {
   const userName = user.username ? `@${user.username}` : user.first_name;
  
   console.log(`Sending welcome message to ${userName}`);
-  return ctx.replyWithMarkdownV2(`*Hey ${userName}, Welcome to* [\\$BIRR](${urlSent})\\!  
-Start building your financial future today\\!`, {
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: "Start now!", web_app: { url: urlSent } }],
-        [{ text: "Join our Community", url: community_link }]
-      ]
-    },
-    disable_web_page_preview: true
-  });
+  return ctx.replyWithHTML(
+    `Hey ${userName}, Welcome to <a href="${urlSent}" target="_blank">$BIRR</a>!\n` +
+    `Start building your financial future today!`,
+    Markup.inlineKeyboard([
+      Markup.button.webApp("Start now!", urlSent),
+      Markup.button.url("Join our Community", community_link)
+    ])
+  );
 });
 
 // Netlify function handler
