@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Cart from "../assets/lottery-cards/aird.png"
+import Cart from "../assets/lottery-cards/cari.svg"
 import Moto from "../assets/lottery-cards/biclycle.svg"
 import Phone from "../assets/lottery-cards/phone.svg"
 import Notebook from "../assets/lottery-cards/notebook.svg"
