@@ -334,7 +334,7 @@ const Ref = () => {
                           <img
                             src={getMedalImage(item.rank)}
                             alt={`Rank ${item.rank} medal`}
-                            className="w-4 h-4"
+                            className="w-6 h-6"
                           />
                         )}
                         {item.imageUrl && (
