@@ -14,9 +14,9 @@ import {
   setDoc,
 } from "firebase/firestore";
 import Spinner from "../Components/Spinner";
-import goldMedal from './images/gold-medal.png';
-import silverMedal from './images/silver-medal.png';
-import bronzeMedal from './images/bronze-medal.png';
+import goldMedal from '../images/gold-medal.png';
+import silverMedal from '../images/silver-medal.png';
+import bronzeMedal from '../images/bronze-medal.png';
 import congratspic from "../images/celebrate.gif";
 import { useUser } from "../context/userContext";
 import ClaimLeveler from "../Components/ClaimLeveler";
@@ -296,16 +296,10 @@ const Ref = () => {
 
 
 const getMedalImage = (rank) => {
-  switch (rank) {
-    case 1:
-      return '/images/gold-medal.png';
-    case 2:
-      return '/images/silver-medal.png';
-    case 3:
-      return '/images/bronze-medal.png';
-    default:
-      return null;
-  }
+  if (rank === 1) return goldMedal;
+  if (rank === 2) return silverMedal;
+  if (rank === 3) return bronzeMedal;
+  return null;
 };
 
 return (
