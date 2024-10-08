@@ -4,9 +4,7 @@ import { Outlet } from "react-router-dom";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { db } from "../firebase";
-import goldMedal from './images/gold-medal.png';
-import silverMedal from './images/silver-medal.png';
-import bronzeMedal from './images/bronze-medal.png';
+
 import {
   collection,
   getDoc,
@@ -16,7 +14,9 @@ import {
   setDoc,
 } from "firebase/firestore";
 import Spinner from "../Components/Spinner";
-
+import goldMedal from './images/gold-medal.png';
+import silverMedal from './images/silver-medal.png';
+import bronzeMedal from './images/bronze-medal.png';
 import congratspic from "../images/celebrate.gif";
 import { useUser } from "../context/userContext";
 import ClaimLeveler from "../Components/ClaimLeveler";
@@ -414,7 +414,10 @@ return (
                         <p className="text-white font-semibold">
                           #{item.rank} {item.name}
                         </p>
-                        <p className="text-white text-sm">{item.rocks} BIRR</p>
+                        <img
+                                src={require('../images/coinsmall.png')}
+                                className="w-full"
+                                alt="coin"/>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
