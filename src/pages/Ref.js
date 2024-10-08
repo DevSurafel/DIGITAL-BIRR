@@ -106,8 +106,6 @@ const Ref = () => {
 
   const [totalUsers, setTotalUsers] = useState(0);
 
-  const [userRank, setUserRank] = useState(null);
-
 
 
   const taskID = "task_tele_1";
@@ -266,41 +264,31 @@ const Ref = () => {
 
     const getLeaderboardData = (users) => {
 
-    if (!Array.isArray(users)) return [];
+      if (!Array.isArray(users)) return [];
 
-    
+      
 
-    const sortedUsers = users.sort((a, b) => b.balance - a.balance);
+      const sortedUsers = users.sort((a, b) => b.balance - a.balance);
 
-    const topUsers = sortedUsers.slice(0, 300);
+      const topUsers = sortedUsers.slice(0, 300);
 
-    
+      
 
-    // Find current user's rank
+      return topUsers.map((user, index) => ({
 
-    const currentUserRank = sortedUsers.findIndex(user => user.username === username) + 1;
+        rank: index + 1,
 
-    setUserRank(currentUserRank);
+        initials: user.username?.substring(0, 2).toUpperCase() || "??",
 
-    
+        name: user.username || "Unknown",
 
-    return topUsers.map((user, index) => ({
+        rocks: formatBalance(user.balance),
 
-      rank: index + 1,
+        imageUrl: user.level?.imgUrl,
 
-      initials: user.username?.substring(0, 2).toUpperCase() || "??",
+      }));
 
-      name: user.username || "Unknown",
-
-      rocks: formatBalance(user.balance),
-
-      imageUrl: user.level?.imgUrl,
-
-    }));
-
-  };
-
-
+    };
 
 
 
@@ -436,11 +424,9 @@ const Ref = () => {
 
   };
 
-  
 
-  
 
-return (
+  return (
 
     <>
 
@@ -604,8 +590,6 @@ return (
 
                         {totalUsers} Holders
 
-                        {userRank && <span className="ml-2 text-[#9d99a9]">(Rank #{userRank})</span>}
-
                       </p>
 
                     </div>
@@ -619,8 +603,6 @@ return (
                   </div>
 
                 </div>
-
-
 
 
 
