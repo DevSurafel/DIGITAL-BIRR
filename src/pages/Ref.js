@@ -268,6 +268,7 @@ const Ref = () => {
   const copyToClipboard = () => {
     const reflink = `https://t.me/ENIGMA_TOOL_BOT?start=r${id}`;
     if (navigator.clipboard && navigator.clipboard.writeText) {
+  
       navigator.clipboard
         .writeText(reflink)
         .then(() => {
@@ -293,214 +294,222 @@ const Ref = () => {
     }
   };
 
-  const getMedalImage = (rank) => {
-    if (rank === 1) return '/images/gold-medal.png';
-    if (rank === 2) return '/images/silver-medal.png';
-    if (rank === 3) return '/images/bronze-medal.png';
-    return null;
-  };
 
-  return (
-    <>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <Animate>
-          <ClaimLeveler
-            claimLevel={claimLevel}
-            setClaimLevel={setClaimLevel}
-          />
-          <Levels showLevels={showLevels} setShowLevels={setShowLevels} />
-          <div className="flex-col justify-center w-full px-5 space-y-3">
-            <div className="fixed top-0 left-0 right-0 px-5 pt-8">
-              <div className="relative flex items-center justify-center space-x-2">
-                <div
-                  id="congrat"
-                  className="opacity-0 invisible w-[80%] absolute pl-10 ease-in-out duration-500 transition-all"
-                >
-                  <img src={congratspic} alt="congrats" className="w-full" />
-                </div>
-                <div className="w-[50px] h-[50px]">
-                  <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
-                </div>
-                <h1 className="text-[#fff] text-[42px] font-extrabold">
-                  {formatNumber(balance + refBonus)}
-                </h1>
-              </div>
+const getMedalImage = (rank) => {
+  switch (rank) {
+    case 1:
+      return '/images/gold-medal.png';
+    case 2:
+      return '/images/silver-medal.png';
+    case 3:
+      return '/images/bronze-medal.png';
+    default:
+      return null;
+  }
+};
 
+return (
+  <>
+    {loading ? (
+      <Spinner />
+    ) : (
+      <Animate>
+        <ClaimLeveler
+          claimLevel={claimLevel}
+          setClaimLevel={setClaimLevel}
+        />
+        <Levels showLevels={showLevels} setShowLevels={setShowLevels} />
+        <div className="flex-col justify-center w-full px-5 space-y-3">
+          <div className="fixed top-0 left-0 right-0 px-5 pt-8">
+            <div className="relative flex items-center justify-center space-x-2">
               <div
-                onClick={levelsAction}
-                className="w-full flex ml-[6px] space-x-1 items-center justify-center"
+                id="congrat"
+                className="opacity-0 invisible w-[80%] absolute pl-10 ease-in-out duration-500 transition-all"
               >
+                <img src={congratspic} alt="congrats" className="w-full" />
+              </div>
+              <div className="w-[50px] h-[50px]">
                 <img
-                  src={level.imgUrl}
-                  className="w-[25px] relative"
-                  alt="bronze"
+                  src={require('../images/coinsmall.png')}
+                  className="w-full"
+                  alt="coin"
                 />
-                <h2 className="text-[#9d99a9] text-[20px] font-medium">
-                  {level.name}
-                </h2>
-                <MdOutlineKeyboardArrowRight className="w-[20px] h-[20px] text-[#9d99a9] mt-[2px]" />
               </div>
-
-              <div className="bg-borders w-full px-5 h-[1px] !mt-5 !mb-5"></div>
-
-              <div className="w-full border-[1px] border-borders rounded-[10px] p-1 flex items-center">
-                <div
-                  onClick={() => handleMenu(1)}
-                  className={`${activeIndex === 1 ? "bg-cards" : ""
-                    }  rounded-[6px] py-[12px] px-3 w-[50%] flex justify-center text-center items-center`}
-                >
-                  LeaderBoard
-                </div>
-
-                <div
-                  onClick={() => handleMenu(2)}
-                  className={`${activeIndex === 2 ? "bg-cards" : ""
-                    }  rounded-[6px] py-[12px] px-3 w-[50%] flex justify-center text-center items-center`}
-                >
-                  Referrals
-                </div>
-              </div>
+              <h1 className="text-[#fff] text-[42px] font-extrabold">
+                {formatNumber(balance + refBonus)}
+              </h1>
             </div>
 
-            <div className="!mt-[204px] w-full h-[60vh] flex flex-col overflow-y-auto ">
-              <div
-                className={`${activeIndex === 1 ? "flex" : "hidden"
-                  } alltaskscontainer flex-col w-full space-y-2`}
-              >
-                <div className="w-full flex justify-between items-center rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex flex-col w-full ">
-                      <p className="text-white font-bold ">{totalUsers} Holders</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold ">Leagues</p>
-                  </div>
-                </div>
-
-                {/* Leaderboard items */}
-                <div className="space-y-2">
-                  {leaderboardData.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between items-center p-3 bg-[#1F2942] rounded-lg"
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-white"
-                          style={{ backgroundColor: getRandomColor() }}
-                        >
-                          {item.initials}
-                        </div>
-                        <div>
-                          <p className="text-white font-semibold">
-                            #{item.rank} {item.name}
-                          </p>
-                          <p className="text-white text-sm">{item.rocks} BIRR </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        {getMedalImage(item.rank) && (
-                          <img
-                            src={getMedalImage(item.rank)}
-                            alt={`Rank ${item.rank} medal`}
-                            className="w-6 h-6"
-                            
-                            
-                            />
-                        )}
-                        <img
-                          src={item.imageUrl}
-                          style={{ width: '35px', height: '35px' }}
-                          alt="Level"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div
-                className={`${activeIndex === 2 ? "flex" : "hidden"} alltaskscontainer flex-col w-full space-y-2`}
-              >
-                <div className="flex flex-col w-full ">
-                  <h3 className="text-[22px] font-semibold ml-3 pb-[16px]">
-                    {referrals.length} Referrals
-                  </h3>
-
-                  <div className="flex flex-col w-full space-y-3">
-                    <div className="w-full h-[60vh] flex flex-col overflow-y-auto pb-[80px]">
-                      {referrals.map((user, index) => (
-                        <div
-                          key={index}
-                          className="bg-cards rounded-[10px] p-[14px] flex flex-wrap justify-between items-center mt-1"
-                        >
-                          <div className="flex flex-col flex-1 space-y-1">
-                            <div className="text-[#fff] pl-1 text-[16px] font-semibold">
-                              {user.username}
-                            </div>
-
-                            <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
-                              <div className="">
-                                <img
-                                  src={user.level.imgUrl}
-                                  alt="bronze"
-                                  className="w-[18px]"
-                                />
-                              </div>
-                              <span className="font-medium text-[#9a96a6]">
-                                {user.level.name}
-                              </span>
-                              <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
-
-                              <span className="w-[20px]">
-                                <img
-                                  src={require('../images/coinsmall.png')}
-                                  className="w-full"
-                                  alt="coin"
-                                />
-                              </span>
-                              <span className="font-normal text-[#ffffff] text-[15px]">
-                                {formatNumber(user.balance)}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="text-[#ffce68] font-semibold text-[14px]">
-                            +{formatNumber((user.balance / 100) * 10)}
-                          </div>
-                          <div className="flex w-full mt-2 p-[4px] items-center bg-energybar rounded-[10px] border-[1px] border-borders">
-                            <div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div
-              className={`${congrats === true
-                ? "visible bottom-6"
-                : "invisible bottom-[-10px]"
-                } z-[60] ease-in duration-300 w-full fixed left-0 right-0 px-4`}
+              onClick={levelsAction}
+              className="w-full flex ml-[6px] space-x-1 items-center justify-center"
             >
-              <div className="w-full text-[#54d192] flex items-center space-x-2 px-4 bg-[#121620ef] h-[50px] rounded-[8px]">
-                <IoCheckmarkCircle size={24} className="" />
+              <img
+                src={level.imgUrl}
+                className="w-[25px] relative"
+                alt="bronze"
+              />
+              <h2 className="text-[#9d99a9] text-[20px] font-medium">
+                {level.name}
+              </h2>
+              <MdOutlineKeyboardArrowRight className="w-[20px] h-[20px] text-[#9d99a9] mt-[2px]" />
+            </div>
 
-                <span className="font-medium">
-                  {formatNumber(notifyBalance)}
-                </span>
+            <div className="bg-borders w-full px-5 h-[1px] !mt-5 !mb-5"></div>
+
+            <div className="w-full border-[1px] border-borders rounded-[10px] p-1 flex items-center">
+              <div
+                onClick={() => handleMenu(1)}
+                className={`${
+                  activeIndex === 1 ? "bg-cards" : ""
+                } rounded-[6px] py-[12px] px-3 w-[50%] flex justify-center text-center items-center`}
+              >
+                LeaderBoard
+              </div>
+              <div
+                onClick={() => handleMenu(2)}
+                className={`${
+                  activeIndex === 2 ? "bg-cards" : ""
+                } rounded-[6px] py-[12px] px-3 w-[50%] flex justify-center text-center items-center`}
+              >
+                Referrals
               </div>
             </div>
           </div>
-          <Outlet />
-        </Animate>
-      )}
-    </>
-  );
-};
+
+          <div className="!mt-[204px] w-full h-[60vh] flex flex-col overflow-y-auto ">
+            <div
+              className={`${
+                activeIndex === 1 ? "flex" : "hidden"
+              } alltaskscontainer flex-col w-full space-y-2`}
+            >
+              <div className="w-full flex justify-between items-center rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className="flex flex-col w-full ">
+                    <p className="text-white font-bold ">
+                      {totalUsers} Holders
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <p className="font-bold ">Leagues</p>
+                </div>
+              </div>
+
+              {/* Leaderboard items */}
+              <div className="space-y-2">
+                {leaderboardData.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center p-3 bg-[#1F2942] rounded-lg"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-white"
+                        style={{ backgroundColor: getRandomColor() }}
+                      >
+                        {item.initials}
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold">
+                          #{item.rank} {item.name}
+                        </p>
+                        <p className="text-white text-sm">{item.rocks} BIRR</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      {getMedalImage(item.rank) && (
+                        <img
+                          src={getMedalImage(item.rank)}
+                          alt={`Rank ${item.rank} medal`}
+                          className="w-6 h-6"
+                        />
+                      )}
+                      <img
+                        src={item.imageUrl}
+                        style={{ width: '35px', height: '35px' }}
+                        alt="Level"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className={`${
+                activeIndex === 2 ? "flex" : "hidden"
+              } alltaskscontainer flex-col w-full space-y-2`}
+            >
+              <div className="flex flex-col w-full">
+                <h3 className="text-[22px] font-semibold ml-3 pb-[16px]">
+                  {referrals.length} Referrals
+                </h3>
+                <div className="flex flex-col w-full space-y-3">
+                  <div className="w-full h-[60vh] flex flex-col overflow-y-auto pb-[80px]">
+                    {referrals.map((user, index) => (
+                      <div
+                        key={index}
+                        className="bg-cards rounded-[10px] p-[14px] flex flex-wrap justify-between items-center mt-1"
+                      >
+                        <div className="flex flex-col flex-1 space-y-1">
+                          <div className="text-[#fff] pl-1 text-[16px] font-semibold">
+                            {user.username}
+                          </div>
+                          <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
+                            <div className="">
+                              <img
+                                src={user.level.imgUrl}
+                                alt="bronze"
+                                className="w-[18px]"
+                              />
+                            </div>
+                            <span className="font-medium text-[#9a96a6]">
+                              {user.level.name}
+                            </span>
+                            <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
+                            <span className="w-[20px]">
+                              <img
+                                src={require('../images/coinsmall.png')}
+                                className="w-full"
+                                alt="coin"
+                              />
+                            </span>
+                            <span className="font-normal text-[#ffffff] text-[15px]">
+                              {formatNumber(user.balance)}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-[#ffce68] font-semibold text-[14px]">
+                          +{formatNumber((user.balance / 100) * 10)}
+                        </div>
+                        <div className="flex w-full mt-2 p-[4px] items-center bg-energybar rounded-[10px] border-[1px] border-borders">
+                          <div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`${
+              congrats ? "visible bottom-6" : "invisible bottom-[-10px]"
+            } z-[60] ease-in duration-300 w-full fixed left-0 right-0 px-4`}
+          >
+            <div className="w-full text-[#54d192] flex items-center space-x-2 px-4 bg-[#121620ef] h-[50px] rounded-[8px]">
+              <IoCheckmarkCircle size={24} className="" />
+              <span className="font-medium">{formatNumber(notifyBalance)}</span>
+            </div>
+          </div>
+        </div>
+        <Outlet />
+      </Animate>
+    )}
+  </>
+);
+
+  
 
 export default Ref;
