@@ -567,7 +567,7 @@ const Boost = () => {
               >
                 <div className="flex flex-1 items-center space-x-2">
                   <div className="">
-                    <img src={battery3} alt="battery" className="w-[35px]" />
+                    <img src={battery3} alt="battery" className="w-250 h-585" />
                   </div>
                   <div className="flex flex-col space-y-1 text-left">
                     <span className="font-semibold text-[17px]">
