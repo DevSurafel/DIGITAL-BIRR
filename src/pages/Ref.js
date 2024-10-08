@@ -317,7 +317,7 @@ const Ref = () => {
                         </div>
                         <div>
                           <p className="text-white font-semibold">
-                            #{item.rank} {item.name}{item.rocks}
+                            #{item.rank} {item.name}   <p className="text-white text-sm">{item.rocks}</p>
                           </p>
                           <img
                             src={coinSmall}
