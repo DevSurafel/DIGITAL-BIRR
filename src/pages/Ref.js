@@ -318,11 +318,13 @@ const Ref = () => {
                         <div>
                           <p className="text-white text-sm font-semibold">
                             #{item.rank} {item.name} </p>
-                            <p className="text-white text-sm font-semibold"><img
-                            src={coinSmall}
-                            className="w-[20px]"
-                            alt="coin"/>
-                          {item.rocks}</p>
+                            <div className="flex items-center space-x-1">
+            <img
+              src={coinSmall}
+              className="w-[20px]"
+              alt="coin"
+            />
+            <p className="text-white text-sm">{item.rocks}</p>
                          
                           
                                                             
