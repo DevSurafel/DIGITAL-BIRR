@@ -265,75 +265,26 @@ const Ref = () => {
 
 
 
+const getLeaderboardData = async (users) => {
+  if (!Array.isArray(users)) return [];
 
-const getLeaderboardData = async (users) => {  
+  const sortedUsers = users.sort((a, b) => b.balance - a.balance).slice(0, 300);
 
-  if (!Array.isArray(users)) return [];  
+  return await Promise.all(sortedUsers.map(async (user, index) => {
+    const userId = user.userId; // Changed from telegramId to userId
+    const response = await fetch(`https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getUserProfilePhotos?user_id=${userId}`);
+    const result = await response.json();
 
-  
-
-  const sortedUsers = users.sort((a, b) => b.balance - a.balance);  
-
-  const topUsers = sortedUsers.slice(0, 300);  
-
-  
-
-  const leaderboardData = await Promise.all(topUsers.map(async (user, index) => {  
-
-   const telegramId = user.telegramId; // assuming you have stored the user's Telegram ID in your database  
-
-   const userProfilePhotos = await fetch(`https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getUserProfilePhotos?user_id=${userId}`);  
-
-   const userProfilePhotosResponse = await userProfilePhotos.json();  
-
-  
-
-   if (userProfilePhotosResponse.result.photos.length > 0) {  
-
-    const profilePictureUrl = userProfilePhotosResponse.result.photos[0].sizes[0].url;  
-
-    return {  
-
-      rank: index + 1,  
-
-      initials: user.username?.substring(0, 2).toUpperCase() || "??",  
-
-      name: user.username || "Unknown",  
-
-      rocks: formatBalance(user.balance),  
-
-      imageUrl: profilePictureUrl,  
-
-    };  
-
-   } else {  
-
-    return {  
-
-      rank: index + 1,  
-
-      initials: user.username?.substring(0, 2).toUpperCase() || "??",  
-
-      name: user.username || "Unknown",  
-
-      rocks: formatBalance(user.balance),  
-
-      imageUrl: user.level?.imgUrl, // fallback to the level image if no profile picture is available  
-
-    };  
-
-   }  
-
-  }));  
-
-  
-
-  return leaderboardData;  
-
+    const profilePictureUrl = result?.photos?.[0]?.[0]?.file_id || user.level?.imgUrl; // Fallback if no profile picture
+    return {
+      rank: index + 1,
+      initials: user.username?.substring(0, 2).toUpperCase() || "??",
+      name: user.username || "Unknown",
+      rocks: formatBalance(user.balance),
+      imageUrl: profilePictureUrl,
+    };
+  }));
 };
-
-
-
 
 
 
