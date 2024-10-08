@@ -317,7 +317,7 @@ const Ref = () => {
                         </div>
                         <div>
                           <p className="text-white font-semibold">
-                            #{item.rank} {item.name}
+                            #{item.rank} {item.name}{item.rocks}
                           </p>
                           <img
                             src={coinSmall}
@@ -332,7 +332,7 @@ const Ref = () => {
                           <img
                             src={getMedalImage(item.rank)}
                             alt={`Rank ${item.rank} medal`}
-                            className="w-6 h-6"
+                            className="w-3 h-5"
                           />
                         )}
                         {item.imageUrl && (
