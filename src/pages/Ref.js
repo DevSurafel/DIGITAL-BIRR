@@ -319,12 +319,11 @@ const Ref = () => {
                           <p className="text-white text-sm font-semibold">
                             #{item.rank} {item.name} </p>
                             <div className="flex items-center space-x-1">
-            <img
-              src={coinSmall}
-              className="w-[20px]"
-              alt="coin"
-            />
-            <p className="text-white text-sm">{item.rocks}</p>
+                        <span className="w-[20px] h-[20px]">
+                          <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
+                        </span>
+                        <span className="font-medium">{item.rocks}</span>
+                      </div>
                          
                           
                                                             
