@@ -291,9 +291,9 @@ const Ref = () => {
   };
 
   const getMedalImage = (rank) => {
-    if (rank === 1) return '/path/to/gold-medal.png';
-    if (rank === 2) return '/path/to/silver-medal.png';
-    if (rank === 3) return '/path/to/bronze-medal.png';
+    if (rank === 1) return '/images/gold-medal.png';
+    if (rank === 2) return '/images/silver-medal.png';
+    if (rank === 3) return '/images/bronze-medal.png';
     return null;
   };
 
@@ -395,7 +395,7 @@ const Ref = () => {
                           <p className="text-white font-semibold">
                             #{item.rank} {item.name}
                           </p>
-                          <p className="text-white text-sm">{item.rocks} Coins</p>
+                          <p className="text-white text-sm">{item.rocks} BIRR </p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
