@@ -485,7 +485,7 @@ const Boost = () => {
                   </div>
 
                   <div className="flex flex-1 flex-col text-left">
-                    <span className="font-semibold tapguru">Topped Off</span>
+                    <span className="font-semibold tapguru">Full Energy</span>
                     {fullTank > 0 ? (
                       <span className="font-medium tapguru2">{fullTank}/3</span>
                     ) : (
@@ -567,7 +567,7 @@ const Boost = () => {
               >
                 <div className="flex flex-1 items-center space-x-2">
                   <div className="">
-                    <img src={battery3} alt="battery" className="w-[30px]" />
+                    <img src={battery} alt="battery" className="w-[30px]" />
                   </div>
                   <div className="flex flex-col space-y-1 text-left">
                     <span className="font-semibold text-[17px]">
@@ -894,7 +894,7 @@ const Boost = () => {
                   <img alt="claim" src={flash} className="w-[80px]" />
                 </div>
                 <h3 className="font-semibold text-[32px] py-4">
-                  Topped Off
+                  Full Energy 
                 </h3>
                 <p className="pb-6 text-[#9a96a6] text-[16px] text-center">
                   Fill your energy to the max
