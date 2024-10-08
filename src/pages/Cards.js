@@ -265,8 +265,8 @@ const Cards = () => {
     
         }, {
     
-            title: 'Krypto',
-            image: require("../images/paragon.png"),
+            title: 'SOL',
+            image: require("../images/sol.png"),
             subtitle: 'Reward',
             price: 25000,
             amount: 1900000,
@@ -370,7 +370,7 @@ const Cards = () => {
                             className={`w-full py-5 px-3 flex items-center justify-center bg-gradient-to-b from-[#3a5fd4] to-[#5078e0] text-center rounded-[12px] font-semibold text-[22px]`}
                         >
                             {/* {isUpgrading ? 'Boosting...' : hasSufficientBalance ? 'Get it!' : 'Insufficient Balance'} */}
-                            Comming Soon
+                            Coming Soon
                         </button>
                     </div>
                 </div>
