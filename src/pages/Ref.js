@@ -324,9 +324,7 @@ const Ref = () => {
                             className="w-[20px]"
                             alt="coin"
                           />
-                                                            <span className="font-normal text-[#ffffff] text-[15px]">
-                                {formatNumber(user.balance)}
-                              </span>
+                                                            
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
