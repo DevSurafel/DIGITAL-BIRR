@@ -4,6 +4,9 @@ import { Outlet } from "react-router-dom";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { db } from "../firebase";
+import goldMedal from './images/gold-medal.png';
+import silverMedal from './images/silver-medal.png';
+import bronzeMedal from './images/bronze-medal.png';
 import {
   collection,
   getDoc,
