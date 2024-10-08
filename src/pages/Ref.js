@@ -316,14 +316,14 @@ const Ref = () => {
                           {item.initials}
                         </div>
                         <div>
-                          <p className="text-white font-semibold">
-                            #{item.rank} {item.name}   <p className="text-white text-sm">{item.rocks}</p>
+                          <p className="text-white text-sm font-semibold">
+                            #{item.rank} {item.name}
                          
                           <img
                             src={coinSmall}
                             className="w-[20px]"
-                            alt="coin"
-                          />
+                            alt="coin"/>
+                          {item.rocks}</p>
                                                             
                         </div>
                       </div>
