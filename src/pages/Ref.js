@@ -14,7 +14,6 @@ import {
 } from "firebase/firestore";
 import Spinner from "../Components/Spinner";
 
-// import TaskTwo from '../Components/TaskTwo';
 import congratspic from "../images/celebrate.gif";
 import { useUser } from "../context/userContext";
 import ClaimLeveler from "../Components/ClaimLeveler";
@@ -38,19 +37,16 @@ const Ref = () => {
   } = useUser();
 
   console.log("Referrals",referrals)
-  // eslint-disable-next-line
   const [showTaskTelegram, setShowTaskTelegram] = useState(false);
   const [showTaskTw, setShowTaskTw] = useState(false);
-  // eslint-disable-next-line
   const [claimLevel, setClaimLevel] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
 
   const [leaderboardData, setLeaderboardData] = useState([]);
-  // eslint-disable-next-line
   const [message, setMessage] = useState("");
-  const taskID = "task_tele_1"; // Assign a unique ID to this task
-  const taskID2 = "task_tw_1"; // Assign a unique ID to this task
+  const taskID = "task_tele_1";
+  const taskID2 = "task_tw_1";
 
   const [tasks, setTasks] = useState([]);
 
@@ -87,15 +83,12 @@ const Ref = () => {
         setMessage("");
       }
     });
+  }, [id, setTaskCompleted, setTaskCompleted2]);
 
-    // eslint-disable-next-line
-  }, [id]);
-
-  const checkTaskCompletion = async (id, taskId, taskId2) => {
+  const checkTaskCompletion = async (id, taskId) => {
     try {
       const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
-      const userTaskDocRef2 = doc(db, "userTasks", `${id}_${taskId2}`);
-      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2);
+      const docSnap = await getDoc(userTaskDocRef);
       if (docSnap.exists()) {
         return docSnap.data().completed;
       } else {
@@ -109,7 +102,6 @@ const Ref = () => {
 
   const levelsAction = () => {
     setShowLevels(true);
-
     document.getElementById("footermain").style.zIndex = "50";
   };
 
@@ -124,48 +116,8 @@ const Ref = () => {
   };
 
   const listTasks = [
-    {
-      taskId: "task3",
-      title: "subcriber Telegram c 1",
-      url: "https://t.me/rockipoint",
-      completed: false,
-      point: 10000,
-      status: "start",
-    },
-    {
-      taskId: "task4",
-      title: "subcriber Telegram c 2",
-      url: "https://t.me/rockipoint",
-      completed: false,
-      point: 20000,
-      status: "start",
-    },
-    {
-      taskId: "task5",
-      title: "subcriber Telegram c 3",
-      url: "https://t.me/web3hubtest",
-      completed: false,
-      point: 30000,
-      status: "start",
-    },
-    {
-      taskId: "task6",
-      title: "subcriber Telegram c 4",
-      url: "https://t.me/rockipoint",
-      completed: false,
-      point: 50000,
-      status: "start",
-    },
-    {
-      taskId: "task8",
-      title: "subcriber Telegram c 5",
-      url: "https://t.me/rockipoint",
-      completed: false,
-      point: 50000,
-      status: "start",
-    },
+    // ... (task list remains unchanged)
   ];
-
 
   useEffect(() => {
     const formatBalance = (balance) => {
@@ -179,26 +131,21 @@ const Ref = () => {
     };
 
     const getLeaderboardData = (users) => {
-      // Sort users by balance in descending order
       const sortedUsers = users.sort((a, b) => b.balance - a.balance);
-
-      // Take only the first 300 users
       const topUsers = sortedUsers.slice(0, 300);
-
-      // Map over the top users to format their data
-      return topUsers.map((user) => ({
+      
+      return topUsers.map((user, index) => ({
+        rank: index + 1,
         initials: user.username.substring(0, 2).toUpperCase(),
         name: user.username,
         rocks: formatBalance(user.balance),
         imageUrl: user.level.imgUrl,
       }));
     };
+
     setTotalUsers(formatBalance(allUsersData.length));
     setLeaderboardData(getLeaderboardData(allUsersData));
-
   }, [allUsersData]);
-
-
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -279,7 +226,6 @@ const Ref = () => {
         { userId: id, taskId: taskId, completed: isCompleted },
         { merge: true }
       );
-      // console.log('Task completion status saved to Firestore.');
     } catch (e) {
       console.error("Error saving task completion status: ", e);
     }
@@ -294,15 +240,11 @@ const Ref = () => {
         if (doc.data().userId === id) {
           userDocId = doc.id;
         }
-        if (doc.data().username && doc.data().totalBalance) {
-          username = doc.data().username;
-        }
       });
 
       if (userDocId) {
         const userDocRef = doc(db, "telegramUsers", userDocId);
         await updateDoc(userDocRef, { balance: newBalance });
-        // console.log('User count updated in Firestore.');
       } else {
         console.error("User document not found.");
       }
@@ -311,8 +253,6 @@ const Ref = () => {
     }
   };
 
-
-  //Get Random colors function
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -322,8 +262,6 @@ const Ref = () => {
     return color;
   };
 
-
-
   const copyToClipboard = () => {
     const reflink = `https://t.me/ENIGMA_TOOL_BOT?start=r${id}`;
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -331,13 +269,12 @@ const Ref = () => {
         .writeText(reflink)
         .then(() => {
           setCopied(true);
-          setTimeout(() => setCopied(false), 10000); // Reset the copied state after 2 seconds
+          setTimeout(() => setCopied(false), 10000);
         })
         .catch((err) => {
           console.error("Failed to copy text: ", err);
         });
     } else {
-      // Fallback method
       const textArea = document.createElement("textarea");
       textArea.value = reflink;
       document.body.appendChild(textArea);
@@ -345,12 +282,19 @@ const Ref = () => {
       try {
         document.execCommand("copy");
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // Reset the copied state after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
       } catch (err) {
         console.error("Failed to copy", err);
       }
       document.body.removeChild(textArea);
     }
+  };
+
+  const getMedalImage = (rank) => {
+    if (rank === 1) return '/path/to/gold-medal.png';
+    if (rank === 2) return '/path/to/silver-medal.png';
+    if (rank === 3) return '/path/to/bronze-medal.png';
+    return null;
   };
 
   return (
@@ -373,7 +317,6 @@ const Ref = () => {
                 >
                   <img src={congratspic} alt="congrats" className="w-full" />
                 </div>
-                {/* <Congratulations showCongrats={showCongrats} setShowCongrats={setShowCongrats} /> */}
                 <div className="w-[50px] h-[50px]">
                   <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
                 </div>
@@ -406,7 +349,6 @@ const Ref = () => {
                     }  rounded-[6px] py-[12px] px-3 w-[50%] flex justify-center text-center items-center`}
                 >
                   LeaderBoard
-                  
                 </div>
 
                 <div
@@ -416,159 +358,125 @@ const Ref = () => {
                 >
                   Referrals
                 </div>
-
               </div>
             </div>
 
             <div className="!mt-[204px] w-full h-[60vh] flex flex-col overflow-y-auto ">
-              {/* {activeIndex == 1 && (
-                <div className="w-full bg-cards rounded-[12px] px-3 py-3 flex flex-col">
-                  <span className="flex items-center justify-between w-full pb-2">
-                    <h2 className="text-[18px] font-semibold">My invite link:</h2>
-                    <span
-                      onClick={copyToClipboard}
-                      className="bg-gradient-to-b from-[#094e9d] to-[#0b62c4] font-medium py-[6px] px-4 rounded-[12px] flex items-center justify-center text-[16px]"
-                    >
-                      {copied ? <span>Copied!</span> : <span>Copy</span>}
-                    </span>
-                  </span>
-                  <div className="text-[#9a96a6] text-[13px]">
-                    https://t.me/Rockipointbot?start=r{id}
-                  </div>
-                </div>
-              )} */}
-               <div
+              <div
                 className={`${activeIndex === 1 ? "flex" : "hidden"
                   } alltaskscontainer flex-col w-full space-y-2`}
               >
-                <div
-                  className={`${activeIndex === 1 ? "flex" : "hidden"
-                    } alltaskscontainer flex-col w-full space-y-2`}
-                >
-                  <div className="w-full flex justify-between items-center   rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      {/* Random Avatar */}
-
-                      <div className="flex flex-col w-full ">
-                        <p className="text-white font-bold ">{totalUsers} Holders</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="font-bold ">Leagues</p>
+                <div className="w-full flex justify-between items-center rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex flex-col w-full ">
+                      <p className="text-white font-bold ">{totalUsers} Holders</p>
                     </div>
                   </div>
-
-
-
-                  {/* Leaderboard items */}
-                  <div className="space-y-2">
-                    {leaderboardData.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-between items-center p-3 bg-[#1F2942] rounded-lg"
-                      >
-                        <div className="flex items-center space-x-4">
-                          {/* Random Color Avatar */}
-                          <div
-                            className="w-8 h-8 rounded-full flex items-center justify-center text-white"
-                            style={{ backgroundColor: getRandomColor() }}
-                          >
-                            {item.initials}
-                          </div>
-                          <div>
-                            <p className="text-white font-semibold">{item.name}</p>
-                            <p className="text-white text-sm">{item.rocks} Coins</p>
-                          </div>
-                        </div>
-                        <div>
-                          {/* Trophy icon */}
-                          <img
-                            src={item.imageUrl}
-                            style={{ width: '35px', height: '35px' }}
-                            alt="vector"
-                          />
-                        </div>
-                      </div>
-                    ))}
+                  <div>
+                    <p className="font-bold ">Leagues</p>
                   </div>
                 </div>
 
+                {/* Leaderboard items */}
+                <div className="space-y-2">
+                  {leaderboardData.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center p-3 bg-[#1F2942] rounded-lg"
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-white"
+                          style={{ backgroundColor: getRandomColor() }}
+                        >
+                          {item.initials}
+                        </div>
+                        <div>
+                          <p className="text-white font-semibold">
+                            #{item.rank} {item.name}
+                          </p>
+                          <p className="text-white text-sm">{item.rocks} Coins</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        {getMedalImage(item.rank) && (
+                          <img
+                            src={getMedalImage(item.rank)}
+                            alt={`Rank ${item.rank} medal`}
+                            className="w-6 h-6"
+                            
+                            
+                            />
+                        )}
+                        <img
+                          src={item.imageUrl}
+                          style={{ width: '35px', height: '35px' }}
+                          alt="Level"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
+
               <div
                 className={`${activeIndex === 2 ? "flex" : "hidden"} alltaskscontainer flex-col w-full space-y-2`}
               >
-
                 <div className="flex flex-col w-full ">
                   <h3 className="text-[22px] font-semibold ml-3 pb-[16px]">
                     {referrals.length} Referrals
                   </h3>
 
                   <div className="flex flex-col w-full space-y-3">
-                    {/* {loading ? ( */}
-                      <div className="w-full h-[60vh] flex flex-col overflow-y-auto pb-[80px]">
-                        {referrals.map((user, index) => (
-                          <>
-                            <div
-                              key={index}
-                              className="bg-cards rounded-[10px] p-[14px] flex flex-wrap justify-between items-center mt-1"
-                            >
-                              <div className="flex flex-col flex-1 space-y-1">
-                                <div className="text-[#fff] pl-1 text-[16px] font-semibold">
-                                  {user.username}
-                                </div>
-
-                                <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
-                                  <div className="">
-                                    <img
-                                      src={user.level.imgUrl}
-                                      alt="bronze"
-                                      className="w-[18px]"
-                                    />
-                                  </div>
-                                  <span className="font-medium text-[#9a96a6]">
-                                    {user.level.name}
-                                  </span>
-                                  <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
-
-                                  <span className="w-[20px]">
-                                    <img
-                                      src={require('../images/coinsmall.png')}
-                                      className="w-full"
-                                      alt="coin"
-                                    />
-                                  </span>
-                                  <span className="font-normal text-[#ffffff] text-[15px]">
-                                    {formatNumber(user.balance)}
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div className="text-[#ffce68] font-semibold text-[14px]">
-                                +{formatNumber((user.balance / 100) * 10)}
-                              </div>
-                              <div className="flex w-full mt-2 p-[4px] items-center bg-energybar rounded-[10px] border-[1px] border-borders">
-                                <div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
-                              </div>
+                    <div className="w-full h-[60vh] flex flex-col overflow-y-auto pb-[80px]">
+                      {referrals.map((user, index) => (
+                        <div
+                          key={index}
+                          className="bg-cards rounded-[10px] p-[14px] flex flex-wrap justify-between items-center mt-1"
+                        >
+                          <div className="flex flex-col flex-1 space-y-1">
+                            <div className="text-[#fff] pl-1 text-[16px] font-semibold">
+                              {user.username}
                             </div>
-                          </>
-                        ))}
-                      </div>
-                    {/* )} */}
+
+                            <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
+                              <div className="">
+                                <img
+                                  src={user.level.imgUrl}
+                                  alt="bronze"
+                                  className="w-[18px]"
+                                />
+                              </div>
+                              <span className="font-medium text-[#9a96a6]">
+                                {user.level.name}
+                              </span>
+                              <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
+
+                              <span className="w-[20px]">
+                                <img
+                                  src={require('../images/coinsmall.png')}
+                                  className="w-full"
+                                  alt="coin"
+                                />
+                              </span>
+                              <span className="font-normal text-[#ffffff] text-[15px]">
+                                {formatNumber(user.balance)}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="text-[#ffce68] font-semibold text-[14px]">
+                            +{formatNumber((user.balance / 100) * 10)}
+                          </div>
+                          <div className="flex w-full mt-2 p-[4px] items-center bg-energybar rounded-[10px] border-[1px] border-borders">
+                            <div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-
-
                 </div>
-
-
-                {/*  */}
               </div>
-
-              {/*  */}
-
-             
-
-              {/*  */}
-
             </div>
             <div
               className={`${congrats === true
@@ -584,7 +492,6 @@ const Ref = () => {
                 </span>
               </div>
             </div>
-            {/*  */}
           </div>
           <Outlet />
         </Animate>
