@@ -45,7 +45,7 @@ ${isActive
     `;
         }}
       >
-        <img src={tasks} className="w-[28px]-mb-[2px]" alt="tasks" />
+        <img src={tasks} className="w-[26px]" alt="tasks" />
         {task && (<div style={redDotStyle}></div>)}
         <span className="font-medium">Tasks</span>
       </NavLink>
