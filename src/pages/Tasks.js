@@ -91,49 +91,39 @@ const Tasks = () => {
 
 
   useEffect(() => {
-    checkTaskCompletion(id, taskID).then((completed) => {
-      setTaskCompleted(completed);
-      if (completed) {
-        setMessage("");
-      }
-    });
-    checkTaskCompletion(id, taskID2).then((completed) => {
-      setTaskCompleted2(completed);
-      if (completed) {
-        setMessage("");
-      }
-    });
-    checkTaskCompletion(id, taskID3).then((completed) => {
+  const checkAllTasks = async () => {
+    const task1Completed = await checkTaskCompletion(id, taskID);
+    setTaskCompleted(task1Completed);
 
-      setTaskCompleted3(completed);
+    const task2Completed = await checkTaskCompletion(id, taskID2);
+    setTaskCompleted2(task2Completed);
 
-      if (completed) {
-        setMessage("");
-      }
-    });
+    const task3Completed = await checkTaskCompletion(id, taskID3);
+    setTaskCompleted3(task3Completed);
+  };
 
+  if (id) {
+    checkAllTasks();
+  }
 
-    console.log("my userid is:", id);
+  console.log("my userid is:", id);
+}, [id]);
 
-    // eslint-disable-next-line
-  }, [id]);
+const checkTaskCompletion = async (id, taskId) => {
+  try {
+    const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
+    const docSnap = await getDoc(userTaskDocRef);
 
-  const checkTaskCompletion = async (id, taskId, taskId2,taskId3) => {
-    try {
-      const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
-      const userTaskDocRef2 = doc(db, "userTasks", `${id}_${taskId2}`);
-      const userTaskDocRef3 = doc(db, "userTasks", `${id}_${taskId3}`);
-      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2,userTaskDocRef3);
-      if (docSnap.exists()) {
-        return docSnap.data().completed;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      console.error("Error checking task completion: ", e);
+    if (docSnap.exists()) {
+      return docSnap.data().completed;
+    } else {
       return false;
     }
-  };
+  } catch (e) {
+    console.error("Error checking task completion: ", e);
+    return false;
+  }
+};
 
   const levelsAction = () => {
     setShowLevels(true);
