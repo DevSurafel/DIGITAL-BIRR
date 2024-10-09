@@ -1,17 +1,30 @@
 const { Telegraf } = require("telegraf");
 
-// Replace with your bot token
+const web_link = "https://digital-birr.netlify.app/";
+const community_link = "https://t.me/+p9ThUnIaaV0wYzZk";
+
 const bot = new Telegraf(process.env.REACT_APP_BOT_TOKEN);
 
-// Replace with your channel ID (e.g., @your_channel_name or channel ID)
-const channelId = "-1001379581156";
+const message = "Hello, this is a test message to the channel with inline buttons!";
 
-// Message you want to send
-const message = "Hello, this is a test message to the channel!";
+const createReplyMarkup = () => {
+  return {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "Visit Website", url: web_link }],
+        [{ text: "Join Community", url: community_link }]
+      ]
+    }
+  };
+};
 
 exports.handler = async (event, context) => {
   try {
-    await bot.telegram.sendMessage(channelId, message, { parse_mode: 'Markdown' });
+    await bot.telegram.sendMessage("-1001379581156", message, {
+      parse_mode: 'Markdown',
+      disable_web_page_preview: true,
+      reply_markup: createReplyMarkup().reply_markup
+    });
     return {
       statusCode: 200,
       body: JSON.stringify({ message: "Message sent successfully!" }),
