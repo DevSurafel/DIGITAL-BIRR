@@ -5,7 +5,9 @@ const community_link = "https://t.me/+p9ThUnIaaV0wYzZk";
 
 const bot = new Telegraf(process.env.REACT_APP_BOT_TOKEN);
 
-const message = "Hello, this is a test message to the channel with an inline button!";
+// Updated message with two lines
+const message = "Hello, this is a test message to the channel with an inline button!\n\n" +
+                "We hope you find our services beneficial!";
 
 const createReplyMarkup = () => {
   const urlSent = `${web_link}?start=`; // Adjust this if you want to add parameters
