@@ -13,7 +13,7 @@ const createReplyMarkup = () => {
   return {
     reply_markup: {
       inline_keyboard: [
-        [{ text: "Start now!", url: web_link }] // Use url type instead of web_app
+        [{ text: "Start now!", web_app: { url: web_link } }] // Using web_app type correctly
       ]
     }
   };
