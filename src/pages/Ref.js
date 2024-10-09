@@ -262,81 +262,33 @@ const Ref = () => {
 
 
 
+    const getLeaderboardData = (users) => {
 
+      if (!Array.isArray(users)) return [];
 
+      
 
+      const sortedUsers = users.sort((a, b) => b.balance - a.balance);
 
-const getLeaderboardData = async (users) => {  
+      const topUsers = sortedUsers.slice(0, 300);
 
-  if (!Array.isArray(users)) return [];  
+      
 
-  
+      return topUsers.map((user, index) => ({
 
-  const sortedUsers = users.sort((a, b) => b.balance - a.balance);  
+        rank: index + 1,
 
-  const topUsers = sortedUsers.slice(0, 300);  
+        initials: user.username?.substring(0, 2).toUpperCase() || "??",
 
-  
+        name: user.username || "Unknown",
 
-  const leaderboardData = await Promise.all(topUsers.map(async (user, index) => {  
+        rocks: formatBalance(user.balance),
 
-   const telegramId = user.telegramId; // assuming you have stored the user's Telegram ID in your database  
+        imageUrl: user.level?.imgUrl,
 
-   const userProfilePhotos = await fetch(`https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getUserProfilePhotos?user_id=${userId}`);  
+      }));
 
-   const userProfilePhotosResponse = await userProfilePhotos.json();  
-
-  
-
-   if (userProfilePhotosResponse.result.photos.length > 0) {  
-
-    const profilePictureUrl = userProfilePhotosResponse.result.photos[0].sizes[0].url;  
-
-    return {  
-
-      rank: index + 1,  
-
-      initials: user.username?.substring(0, 2).toUpperCase() || "??",  
-
-      name: user.username || "Unknown",  
-
-      rocks: formatBalance(user.balance),  
-
-      imageUrl: profilePictureUrl,  
-
-    };  
-
-   } else {  
-
-    return {  
-
-      rank: index + 1,  
-
-      initials: user.username?.substring(0, 2).toUpperCase() || "??",  
-
-      name: user.username || "Unknown",  
-
-      rocks: formatBalance(user.balance),  
-
-      imageUrl: user.level?.imgUrl, // fallback to the level image if no profile picture is available  
-
-    };  
-
-   }  
-
-  }));  
-
-  
-
-  return leaderboardData;  
-
-};
-
-
-
-
-
-
+    };
 
 
 
@@ -666,31 +618,47 @@ const getLeaderboardData = async (users) => {
 
                     >
 
-<div className="flex items-center space-x-4">  
+                      <div className="flex items-center space-x-4">
 
-  <img src={item.imageUrl} alt="User Profile Picture" className="w-8 h-8 rounded-full" />  
+                        <div
 
-  <div>  
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-white"
 
-   <p className="text-white text-sm font-semibold">#{item.rank} {item.name}</p>  
+                          style={{ backgroundColor: getRandomColor() }}
 
-   <div className="flex items-center space-x-1">  
+                        >
 
-    <span className="w-[20px] h-[20px]">  
+                          {item.initials}
 
-      <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />  
+                        </div>
 
-    </span>  
+                        <div>
 
-    <span className="font-medium">{item.rocks}</span>  
+                          <p className="text-white text-sm font-semibold">
 
-   </div>  
+                            #{item.rank} {item.name} </p>
 
-  </div>  
+                            <div className="flex items-center space-x-1">
 
-</div>
+                        <span className="w-[20px] h-[20px]">
 
+                          <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
 
+                        </span>
+
+                        <span className="font-medium">{item.rocks}</span>
+
+                      </div>
+
+                         
+
+                          
+
+                                                            
+
+                        </div>
+
+                      </div>
 
                       <div className="flex items-center space-x-2">
 
