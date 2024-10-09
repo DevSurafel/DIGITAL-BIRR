@@ -580,7 +580,7 @@ const Plutos = () => {
                         onDoubleClick={handleClickGuru}
                         onPointerDown={handleClickGuru}
                         ref={imageRef}
-                        src={require('../images/bcen.png')}
+                        src={require('../images/bcen.webp')}
                         alt="Wobble"
                         className="wobble-image !w-[270px] select-none"
                       />
