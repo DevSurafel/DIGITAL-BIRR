@@ -20,7 +20,12 @@ const createReplyMarkup = () => {
 };
 
 exports.handler = async (event, context) => {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
   try {
+    // Sending the message to the channel with the inline button
     await bot.telegram.sendMessage("-1001379581156", message, {
       parse_mode: 'Markdown',
       disable_web_page_preview: true,
