@@ -521,7 +521,7 @@ const Plutos = () => {
 
               {/* Invite Button */}
               <div className="flex cursor-pointer border-[1px] border-borders P-1 bg-[#1F2942] rounded-lg justify-center w-[110px] mr-6">
-                <img src={ref} className="w-[35px] mr-2" />
+                <img src={ref} className="w-[37px] mr-2" />
                 <button
                   onClick={() => { setShowInvitation(true) }}
                   className="flex items-center justify-center   text-white font-normal py-1 text-[17px] rounded-md w-full">
