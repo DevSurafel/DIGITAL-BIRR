@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
     await bot.telegram.sendMessage("-1001379581156", message, {
       parse_mode: 'Markdown',
       disable_web_page_preview: true,
-      reply_markup: createReplyMarkup().reply_markup
+      ...createReplyMarkup()
     });
     return {
       statusCode: 200,
