@@ -24,6 +24,7 @@ import MilestoneRewards from "../Components/MilestoneRewards";
 import ReferralRewards from "../Components/Rewards";
 import TaskTelegram from "../Components/Task/TaskTelegram";
 import TaskTw from "../Components/Task/TaskTw";
+import TaskCat from "../Components/Task/TaskCat";
 import TaskWhatsapp from "../Components/Task/TaskWhatsapp";
 
 const Tasks = () => {
@@ -42,6 +43,7 @@ const Tasks = () => {
   const [loading, setLoading] = useState(false);
   const [showTaskTelegram, setShowTaskTelegram] = useState(false);
   const [showTaskTw, setShowTaskTw] = useState(false);
+  const [showTaskCat, setShowTaskCat] = useState(false);
   const [showWhatsapp, setShowWhatsapp] = useState(false);
   // eslint-disable-next-line
   const [claimLevel, setClaimLevel] = useState(false);
@@ -50,6 +52,7 @@ const Tasks = () => {
   const [message, setMessage] = useState("");
   const taskID = "task_tele_1"; // Assign a unique ID to this task
   const taskID2 = "task_tw_1"; // Assign a unique ID to this task
+  const taskID3 = "task_cat"; // Assign a unique ID to this task
 
   const [tasks, setTasks] = useState([]);
 
@@ -79,6 +82,13 @@ const Tasks = () => {
     setShowTaskTw(true);
     document.getElementById("footermain").style.zIndex = "50";
   };
+  const taskCat = () => {
+
+    setShowTaskCat(true);
+
+    document.getElementById("footermain").style.zIndex = "50";
+  };
+
 
   useEffect(() => {
     checkTaskCompletion(id, taskID).then((completed) => {
@@ -93,17 +103,27 @@ const Tasks = () => {
         setMessage("");
       }
     });
+    checkTaskCompletion(id, taskID3).then((completed) => {
+
+      setTaskCompleted3(completed);
+
+      if (completed) {
+        setMessage("");
+      }
+    });
+
 
     console.log("my userid is:", id);
 
     // eslint-disable-next-line
   }, [id]);
 
-  const checkTaskCompletion = async (id, taskId, taskId2) => {
+  const checkTaskCompletion = async (id, taskId, taskId2,taskId3) => {
     try {
       const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
       const userTaskDocRef2 = doc(db, "userTasks", `${id}_${taskId2}`);
-      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2);
+      const userTaskDocRef3 = doc(db, "userTasks", `${id}_${taskId3}`);
+      const docSnap = await getDoc(userTaskDocRef, userTaskDocRef2,userTaskDocRef3);
       if (docSnap.exists()) {
         return docSnap.data().completed;
       } else {
@@ -134,40 +154,40 @@ const Tasks = () => {
   const listTasks = [
     {
       taskId: "task3",
-      title: "subcriber Telegram c 1",
-      url: "https://t.me/rockipoint",
+      title: "Subcribe Telegram c 1",
+      url: "https://t.me/+p9ThUnIaaV0wYzZk",
       completed: false,
       point: 10000,
       status: "start",
     },
     {
       taskId: "task4",
-      title: "subcriber Telegram c 2",
-      url: "https://t.me/rockipoint",
+      title: "Subcribe Telegram c 2",
+      url: "https://t.me/+p9ThUnIaaV0wYzZk",
       completed: false,
       point: 20000,
       status: "start",
     },
     {
       taskId: "task5",
-      title: "subcriber Telegram c 3",
-      url: "https://t.me/web3hubtest",
+      title: "Subcribe Telegram c 3",
+      url: "https://t.me/+p9ThUnIaaV0wYzZk",
       completed: false,
       point: 30000,
       status: "start",
     },
     {
       taskId: "task6",
-      title: "subcriber Telegram c 4",
-      url: "https://t.me/rockipoint",
+      title: "Subcribe Telegram c 4",
+      url: "https://t.me/+p9ThUnIaaV0wYzZk",
       completed: false,
       point: 50000,
       status: "start",
     },
     {
       taskId: "task8",
-      title: "subcriber Telegram c 5",
-      url: "https://t.me/rockipoint",
+      title: "Subcribe Telegram c 5",
+      url: "https://t.me/+p9ThUnIaaV0wYzZk",
       completed: false,
       point: 50000,
       status: "start",
@@ -482,6 +502,54 @@ const Tasks = () => {
               </div>
 
               {/*  */}
+              
+              
+              
+                              {<div
+                  onClick={taskCat}
+                  className="bg-cards rounded-[10px] p-[14px] flex justify-between items-center"
+                >
+                  <div className="flex items-center flex-1 space-x-2">
+                    <div className="">
+                      <img src={require('../images/taskbook.png')} alt="tasks" className="w-[50px]" />
+                    </div>
+                    <div className="flex flex-col space-y-1">
+                      <span className="font-semibold">Play Cats</span>
+                      <div className="flex items-center space-x-1">
+                        <span className="w-[20px] h-[20px]">
+                          <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
+                        </span>
+                        <span className="font-medium">50 000</span>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div className="">
+                    {taskCompleted2 ? (
+                      <>
+                        <IoCheckmarkSharp className="w-[20px] h-[20px] text-[#5bd173] mt-[2px]" />
+                      </>
+                    ) : (
+                      <>
+                        <MdOutlineKeyboardArrowRight className="w-[20px] h-[20px] text-[#e0e0e0] mt-[2px]" />
+                      </>
+                    )}
+                  </div>
+
+                </div> }
+
+
+                {/*  */}
+                
+              </div>
+
+              {/*  */}
+              
+              
+              
+              
 
               <div
                 className={`${activeIndex === 2 ? "flex" : "hidden"
@@ -509,6 +577,7 @@ const Tasks = () => {
               setShowModal={setShowWhatsapp}
             />
             <TaskTw showModal={showTaskTw} setShowModal={setShowTaskTw} />
+               <TaskCat showModal={showTaskCat} setShowModal={setShowTaskCat} />         
 
             <ClaimLeveler
               claimLevel={claimLevel}
