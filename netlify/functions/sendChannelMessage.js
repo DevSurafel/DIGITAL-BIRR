@@ -9,15 +9,26 @@ const bot = new Telegraf(process.env.REACT_APP_BOT_TOKEN);
 const message = "Hello, this is a test message to the channel with an inline button!\n\n" +
                 "We hope you find our services beneficial!";
 
-const createReplyMarkup = () => {
+const createReplyMarkup = (startPayload = '') => {
+  const urlSent = `${web_link}?start=${startPayload}`;
   return {
     reply_markup: {
       inline_keyboard: [
-        [{ text: "Start now!", web_app: { url: web_link } }] // Using web_app type correctly
+        [{ text: "Start now!", web_app: { url: urlSent } }],
+        [{ text: "Join our Community", url: community_link }]
       ]
     }
   };
 };
+
+bot.start((ctx) => {
+  const startPayload = ctx.startPayload;
+  const user = ctx.message.from;
+  return ctx.replyWithMarkdown(welcomeMessage(user), { 
+    disable_web_page_preview: true,  // Disable link preview
+    ...createReplyMarkup(startPayload) 
+  });
+});
 
 exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
