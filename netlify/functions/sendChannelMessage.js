@@ -10,7 +10,7 @@ const message = "Hello, this is a test message to the channel with an inline but
                 "We hope you find our services beneficial!";
 
 const createReplyMarkup = () => {
-  const urlSent = `${web_link}?start=`; // Adjust this if you want to add parameters
+  const urlSent = `${web_link}?start=`; // You can customize this if needed
   return {
     reply_markup: {
       inline_keyboard: [
@@ -23,7 +23,7 @@ const createReplyMarkup = () => {
 exports.handler = async (event, context) => {
   try {
     await bot.telegram.sendMessage("-1001379581156", message, {
-      parse_mode: 'Markdown',
+      parse_mode: 'Markdown', // Ensure you are using Markdown correctly
       disable_web_page_preview: true,
       ...createReplyMarkup()
     });
@@ -32,10 +32,10 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ message: "Message sent successfully!" }),
     };
   } catch (error) {
-    console.error("Error sending message:", error);
+    console.error("Error sending message:", error); // Log the error for debugging
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Failed to send message" }),
+      body: JSON.stringify({ error: "Failed to send message", details: error.message }), // Include error message
     };
   }
 };
