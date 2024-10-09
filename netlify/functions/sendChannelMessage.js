@@ -1,8 +1,6 @@
 const { Telegraf } = require("telegraf");
-
 const web_link = "https://digital-birr.netlify.app/";
 const community_link = "https://t.me/+p9ThUnIaaV0wYzZk";
-
 const bot = new Telegraf(process.env.REACT_APP_BOT_TOKEN);
 
 // Updated message with two lines
