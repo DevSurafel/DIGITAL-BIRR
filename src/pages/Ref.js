@@ -136,7 +136,7 @@ const Ref = () => {
       }));
     };
 
-    setTotalUsers(formatNumber(allUsersData.length));
+    setTotalUsers(formatBalance(allUsersData.length));
     setLeaderboardData(getLeaderboardData(allUsersData));
   }, [allUsersData]);
 
@@ -204,10 +204,7 @@ const Ref = () => {
   };
 
   // Determine User's Rank
-  const userRank = leaderboardData.findIndex((item) => item.name === username) + 1;
-
-  // Format for display
-  const displayRank = userRank > 0 ? userRank : 'Not Ranked';
+  const userRank = leaderboardData.findIndex((user) => user.username === username) + 1;
 
   return (
     <>
@@ -286,14 +283,14 @@ const Ref = () => {
               >
                 <div className="w-full flex justify-between items-center rounded-lg">
                   <div className="flex items-center space-x-4">
-                    <div className="flex flex-col w-full items-center"> {/* Centering */}
-                      <p className="text-white font-bold text-center">
+                    <div className="flex flex-col w-full">
+                      <p className="text-white font-bold">
                         {totalUsers} Holders
                       </p>
-                      <p className="text-white font-bold text-center">Your Rank: #{displayRank}</p>
+                      <p className="text-white font-bold">Rank: #{userRank || 'Not Ranked'}</p>
                     </div>
                   </div>
-                  <div className="flex items-center">
+                  <div>
                     <p className="font-bold">Leagues</p>
                   </div>
                 </div>
@@ -407,7 +404,7 @@ const Ref = () => {
                 } z-[60] ease-in duration-300 w-full fixed left-0 right-0 px-4`}
             >
               <div className="w-full text-[#54d192] flex items-center space-x-2 px-4 bg-[#121620ef] h-[50px] rounded-[8px]">
-                <IoCheckmarkCircle size={24} />
+                <IoCheckmarkCircle size={24} className="" />
                 <span className="font-medium">
                   {formatNumber(notifyBalance)}
                 </span>
