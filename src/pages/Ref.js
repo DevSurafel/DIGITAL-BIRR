@@ -52,36 +52,13 @@ const Ref = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
   const [userRank, setUserRank] = useState(null);
+  const [userBalance, setUserBalance] = useState(0);
 
   const taskID = "task_tele_1";
   const taskID2 = "task_tw_1";
 
   const handleMenu = (index) => {
     setActiveIndex(index);
-  };
-
-  const taskTelegram = () => {
-    setShowTaskTelegram(true);
-    const footerElement = document.getElementById("footermain");
-    if (footerElement) {
-      footerElement.style.zIndex = "50";
-    }
-  };
-
-  const taskTw = () => {
-    setShowTaskTw(true);
-    const footerElement = document.getElementById("footermain");
-    if (footerElement) {
-      footerElement.style.zIndex = "50";
-    }
-  };
-
-  const levelsAction = () => {
-    setShowLevels(true);
-    const footerElement = document.getElementById("footermain");
-    if (footerElement) {
-      footerElement.style.zIndex = "50";
-    }
   };
 
   const formatNumber = (num) => {
@@ -93,6 +70,16 @@ const Ref = () => {
     } else {
       return (num / 1000000).toFixed(3).replace(".", ".") + " M";
     }
+  };
+
+  const formatBalance = (balance) => {
+    if (!balance) return "0";
+    if (balance >= 1_000_000) {
+      return `${(balance / 1_000_000).toFixed(1)}M`;
+    } else if (balance >= 1_000) {
+      return `${(balance / 1_000).toFixed(1)}K`;
+    }
+    return balance.toString();
   };
 
   useEffect(() => {
@@ -118,33 +105,31 @@ const Ref = () => {
   }, [id, setTaskCompleted, setTaskCompleted2]);
 
   useEffect(() => {
-    const formatBalance = (balance) => {
-      if (!balance) return "0";
-      if (balance >= 1_000_000) {
-        return `${(balance / 1_000_000).toFixed(1)}M`;
-      } else if (balance >= 1_000) {
-        return `${(balance / 1_000).toFixed(1)}K`;
-      }
-      return balance.toString();
-    };
-
     const getLeaderboardData = (users) => {
       if (!Array.isArray(users)) return [];
       
-      const sortedUsers = users.sort((a, b) => b.balance - a.balance);
+      // Sort users by total balance (including refBonus) in descending order
+      const sortedUsers = [...users].sort((a, b) => {
+        const totalBalanceA = (a.balance || 0) + (a.refBonus || 0);
+        const totalBalanceB = (b.balance || 0) + (b.refBonus || 0);
+        return totalBalanceB - totalBalanceA;
+      });
+      
       // Find current user's rank
-      const userRankIndex = sortedUsers.findIndex(user => user.username === username);
-      if (userRankIndex !== -1) {
-        setUserRank(userRankIndex + 1);
+      const currentUserRank = sortedUsers.findIndex(user => user.username === username) + 1;
+      setUserRank(currentUserRank);
+      
+      // Find current user's total balance
+      const currentUser = sortedUsers.find(user => user.username === username);
+      if (currentUser) {
+        setUserBalance((currentUser.balance || 0) + (currentUser.refBonus || 0));
       }
       
-      const topUsers = sortedUsers.slice(0, 300);
-      
-      return topUsers.map((user, index) => ({
+      return sortedUsers.slice(0, 300).map((user, index) => ({
         rank: index + 1,
         initials: user.username?.substring(0, 2).toUpperCase() || "??",
         name: user.username || "Unknown",
-        rocks: formatBalance(user.balance),
+        rocks: formatBalance((user.balance || 0) + (user.refBonus || 0)),
         imageUrl: user.level?.imgUrl,
       }));
     };
@@ -161,42 +146,6 @@ const Ref = () => {
     } catch (error) {
       console.error("Error checking task completion:", error);
       return false;
-    }
-  };
-
-  const saveTaskCompletionToFirestore = async (id, taskId, isCompleted) => {
-    try {
-      const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
-      await setDoc(
-        userTaskDocRef,
-        { userId: id, taskId: taskId, completed: isCompleted },
-        { merge: true }
-      );
-    } catch (error) {
-      console.error("Error saving task completion:", error);
-    }
-  };
-
-  const updateUserCountInFirestore = async (id, newBalance) => {
-    try {
-      const userRef = collection(db, "telegramUsers");
-      const querySnapshot = await getDocs(userRef);
-      let userDocId = null;
-
-      querySnapshot.forEach((doc) => {
-        if (doc.data().userId === id) {
-          userDocId = doc.id;
-        }
-      });
-
-      if (userDocId) {
-        const userDocRef = doc(db, "telegramUsers", userDocId);
-        await updateDoc(userDocRef, { balance: newBalance });
-      } else {
-        console.error("User document not found.");
-      }
-    } catch (error) {
-      console.error("Error updating user count:", error);
     }
   };
 
@@ -251,7 +200,7 @@ const Ref = () => {
               </div>
 
               <div
-                onClick={levelsAction}
+                onClick={() => setShowLevels(true)}
                 className="w-full flex ml-[6px] space-x-1 items-center justify-center"
               >
                 <img
@@ -300,15 +249,15 @@ const Ref = () => {
                     </p>
                   </div>
                   
-                  {userRank && (
-                    <div className="flex-1 flex justify-center">
+                  <div className="flex-1 flex justify-center">
+                    {userRank && (
                       <div className="bg-[#1F2942] px-4 py-1 rounded-full">
                         <span className="text-[#FFD700] font-bold">
                           Your Rank #{userRank}
                         </span>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   
                   <div className="flex-1 text-right">
                     <p className="font-bold">Leagues</p>
@@ -334,7 +283,7 @@ const Ref = () => {
                           </p>
                           <div className="flex items-center space-x-1">
                             <span className="w-[20px] h-[20px]">
-                              <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
+                              <img src={coinSmall} className="w-full" alt="coin" />
                             </span>
                             <span className="font-medium">{item.rocks}</span>
                           </div>
@@ -371,145 +320,80 @@ const Ref = () => {
                     {referrals.length} Referrals
                   </h3>
                   <div className="flex flex-col w-full space-y-3">
-
                     <div className="w-full h-[60vh] flex flex-col overflow-y-auto pb-[80px]">
-
                       {referrals.map((user, index) => (
-
                         <div
-
                           key={index}
-
                           className="bg-cards rounded-[10px] p-[14px] flex flex-wrap justify-between items-center mt-1"
-
                         >
-
                           <div className="flex flex-col flex-1 space-y-1">
-
                             <div className="text-[#fff] pl-1 text-[16px] font-semibold">
-
                               {user.username}
-
                             </div>
-
                             <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
-
                               <div>
-
                                 <img
-
                                   src={user.level?.imgUrl}
-
                                   alt="level"
-
                                   className="w-[18px]"
-
                                 />
-
                               </div>
-
                               <span className="font-medium text-[#9a96a6]">
-
                                 {user.level?.name}
-
                               </span>
-
                               <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
-
                               <span className="w-[20px]">
-
                                 <img
-
                                   src={coinSmall}
-
                                   className="w-full"
-
                                   alt="coin"
-
                                 />
-
                               </span>
-
-                                                            <span className="font-normal text-[#ffffff] text-[15px]">
-
+                              <span className="font-normal text-[#ffffff] text-[15px]">
                                 {formatNumber(user.balance)}
-
                               </span>
-
                             </div>
-
                           </div>
 
-
-
                           <div className="text-[#ffce68] font-semibold text-[14px]">
-
                             +{formatNumber((user.balance / 100) * 10)}
-
                           </div>
 
                           <div className="flex w-full mt-2 p-[4px] items-center bg-energybar rounded-[10px] border-[1px] border-borders">
 
-                            <div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
-
+<div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
                           </div>
-
                         </div>
-
                       ))}
-
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
             <div
-
-              className={`${congrats === true
-
+              className={`${
+                congrats === true
                 ? "visible bottom-6"
-
                 : "invisible bottom-[-10px]"
-
-                } z-[60] ease-in duration-300 w-full fixed left-0 right-0 px-4`}
-
+              } z-[60] ease-in duration-300 w-full fixed left-0 right-0 px-4`}
             >
-
               <div className="w-full text-[#54d192] flex items-center space-x-2 px-4 bg-[#121620ef] h-[50px] rounded-[8px]">
-
                 <IoCheckmarkCircle size={24} className="" />
-
-
-
                 <span className="font-medium">
-
                   {formatNumber(notifyBalance)}
-
                 </span>
-
               </div>
-
             </div>
-
           </div>
-
           <Outlet />
-
         </Animate>
-
       )}
-
     </>
-
   );
-
 };
 
-
-
 export default Ref;
+
+
+                                           
