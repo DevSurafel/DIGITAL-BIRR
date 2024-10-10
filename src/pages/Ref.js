@@ -258,7 +258,7 @@ const Ref = () => {
                       <p className="text-white font-bold">
                         {totalUsers} Holders
                       </p>
-                      <p className="text-white font-bold">Rank: #{userRank}</p>
+                      <p className="text-white font-bold">Rank:#{item.rank} </p>
                     </div>
                   </div>
                   <div>
