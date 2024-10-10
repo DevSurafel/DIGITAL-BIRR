@@ -18,6 +18,7 @@ import silverMedal from '../images/silver-medal.png';
 import bronzeMedal from '../images/bronze-medal.png';
 import congratspic from "../images/celebrate.gif";
 import coinSmall from '../images/coinsmall.png';
+import coinImage from '../images/coinsmall.png';
 import { useUser } from "../context/userContext";
 import ClaimLeveler from "../Components/ClaimLeveler";
 import Levels from "../Components/Levels";
@@ -60,6 +61,17 @@ const Ref = () => {
     setActiveIndex(index);
   };
 
+  const formatNumber = (num) => {
+    if (!num) return "0";
+    if (num < 100000) {
+      return new Intl.NumberFormat().format(num).replace(/,/g, " ");
+    } else if (num < 1000000) {
+      return new Intl.NumberFormat().format(num).replace(/,/g, " ");
+    } else {
+      return (num / 1000000).toFixed(3).replace(".", ".") + " M";
+    }
+  };
+
   const taskTelegram = () => {
     setShowTaskTelegram(true);
     const footerElement = document.getElementById("footermain");
@@ -81,17 +93,6 @@ const Ref = () => {
     const footerElement = document.getElementById("footermain");
     if (footerElement) {
       footerElement.style.zIndex = "50";
-    }
-  };
-
-  const formatNumber = (num) => {
-    if (!num) return "0";
-    if (num < 100000) {
-      return new Intl.NumberFormat().format(num).replace(/,/g, " ");
-    } else if (num < 1000000) {
-      return new Intl.NumberFormat().format(num).replace(/,/g, " ");
-    } else {
-      return (num / 1000000).toFixed(3).replace(".", ".") + " M";
     }
   };
 
@@ -118,23 +119,20 @@ const Ref = () => {
   }, [id, setTaskCompleted, setTaskCompleted2]);
 
   useEffect(() => {
-const getLeaderboardData = (users) => {
+    const getLeaderboardData = (users) => {
       if (!Array.isArray(users) || users.length === 0) return [];
       
-      // Sort users by total balance (including refBonus) in descending order
       const sortedUsers = [...users].sort((a, b) => {
         const totalBalanceA = (Number(a.balance) || 0) + (Number(a.refBonus) || 0);
         const totalBalanceB = (Number(b.balance) || 0) + (Number(b.refBonus) || 0);
         return totalBalanceB - totalBalanceA;
       });
       
-      // Find current user's rank (add 1 because index is 0-based)
       const currentUserIndex = sortedUsers.findIndex(user => user.username === username);
       if (currentUserIndex !== -1) {
         setUserRank(currentUserIndex + 1);
       }
       
-      // Calculate leaderboard data
       return sortedUsers.slice(0, 300).map((user, index) => ({
         rank: index + 1,
         initials: user.username?.substring(0, 2).toUpperCase() || "??",
@@ -144,10 +142,9 @@ const getLeaderboardData = (users) => {
       }));
     };
 
-    setTotalUsers(formatBalance(allUsersData.length));
+    setTotalUsers(formatNumber(allUsersData.length));
     setLeaderboardData(getLeaderboardData(allUsersData));
   }, [allUsersData, username]);
-  
   
   const checkTaskCompletion = async (id, taskId) => {
     try {
@@ -289,32 +286,27 @@ const getLeaderboardData = (users) => {
                   activeIndex === 1 ? "flex" : "hidden"
                 } alltaskscontainer flex-col w-full space-y-2`}
               >
-              
-              
-              
-   <div className="w-full flex items-center rounded-lg">
-    <div className="flex-1">
-      <p className="text-white font-bold">
-        {totalUsers} Holders
-      </p>
-    </div>
-    
-    <div className="flex-1 flex justify-center">
-      {userRank > 0 && (
-        <div className="bg-[#1F2942] px-4 py-1 rounded-full">
-          <span className="text-[#FFD700] font-bold">
-            Rank #{userRank}
-          </span>
-        </div>
-      )}
-    </div>
-    
-    <div className="flex-1 text-right">
-      <p className="font-bold">Leagues</p>
-    </div>
-  </div>
-                
-                
+                <div className="w-full flex items-center rounded-lg">
+                  <div className="flex-1">
+                    <p className="text-white font-bold">
+                      {totalUsers} Holders
+                    </p>
+                  </div>
+                  
+                  <div className="flex-1 flex justify-center">
+                    {userRank > 0 && (
+                      <div className="bg-[#1F2942] px-4 py-1 rounded-full">
+                        <span className="text-[#FFD700] font-bold">
+                          Rank #{userRank}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1 text-right">
+                    <p className="font-bold">Leagues</p>
+                  </div>
+                </div>
 
                 <div className="space-y-2">
                   {leaderboardData.map((item, index) => (
@@ -335,7 +327,7 @@ const getLeaderboardData = (users) => {
                           </p>
                           <div className="flex items-center space-x-1">
                             <span className="w-[20px] h-[20px]">
-                              <img src={coinSmall} className="w-full" alt="coin" />
+                              <img src={coinImage} className="w-full" alt="coin" />
                             </span>
                             <span className="font-medium">{item.rocks}</span>
                           </div>
@@ -372,29 +364,17 @@ const getLeaderboardData = (users) => {
                     {referrals.length} Referrals
                   </h3>
                   <div className="flex flex-col w-full space-y-3">
-
                     <div className="w-full h-[60vh] flex flex-col overflow-y-auto pb-[80px]">
-
                       {referrals.map((user, index) => (
-
                         <div
-
                           key={index}
-
                           className="bg-cards rounded-[10px] p-[14px] flex flex-wrap justify-between items-center mt-1"
-
                         >
-
                           <div className="flex flex-col flex-1 space-y-1">
-
                             <div className="text-[#fff] pl-1 text-[16px] font-semibold">
-
                               {user.username}
-
                             </div>
-
                             <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
-
                               <div>
 
                                 <img
