@@ -139,7 +139,7 @@ const getLeaderboardData = (users) => {
         rank: index + 1,
         initials: user.username?.substring(0, 2).toUpperCase() || "??",
         name: user.username || "Unknown",
-        rocks: formatBalance((Number(user.balance) || 0) + (Number(user.refBonus) || 0)),
+        rocks: formatNumber((Number(user.balance) || 0) + (Number(user.refBonus) || 0)),
         imageUrl: user.level?.imgUrl,
       }));
     };
@@ -335,7 +335,7 @@ const getLeaderboardData = (users) => {
                           </p>
                           <div className="flex items-center space-x-1">
                             <span className="w-[20px] h-[20px]">
-                              <img src={require('../images/coinsmall.png')} className="w-full" alt="coin" />
+                              <img src={coinSmall} className="w-full" alt="coin" />
                             </span>
                             <span className="font-medium">{item.rocks}</span>
                           </div>
