@@ -119,32 +119,34 @@ const Ref = () => {
   }, [id, setTaskCompleted, setTaskCompleted2]);
 
   useEffect(() => {
-    const getLeaderboardData = (users) => {
-      if (!Array.isArray(users) || users.length === 0) return [];
-      
-      const sortedUsers = [...users].sort((a, b) => {
-        const totalBalanceA = (Number(a.balance) || 0) + (Number(a.refBonus) || 0);
-        const totalBalanceB = (Number(b.balance) || 0) + (Number(b.refBonus) || 0);
-        return totalBalanceB - totalBalanceA;
-      });
-      
-      const currentUserIndex = sortedUsers.findIndex(user => user.username === username);
-      if (currentUserIndex !== -1) {
-        setUserRank(currentUserIndex + 1);
-      }
-      
-      return sortedUsers.slice(0, 300).map((user, index) => ({
-        rank: index + 1,
-        initials: user.username?.substring(0, 2).toUpperCase() || "??",
-        name: user.username || "Unknown",
-        rocks: formatNumber((Number(user.balance) || 0) + (Number(user.refBonus) || 0)),
-        imageUrl: user.level?.imgUrl,
-      }));
-    };
+  const getLeaderboardData = (users) => {
+    if (!Array.isArray(users) || users.length === 0) return;
 
-    setTotalUsers(formatNumber(allUsersData.length));
-    setLeaderboardData(getLeaderboardData(allUsersData));
-  }, [allUsersData, username]);
+    const sortedUsers = [...users].sort((a, b) => {
+      const totalBalanceA = (Number(a.balance) || 0) + (Number(a.refBonus) || 0);
+      const totalBalanceB = (Number(b.balance) || 0) + (Number(b.refBonus) || 0);
+      return totalBalanceB - totalBalanceA;
+    });
+
+    const currentUserIndex = sortedUsers.findIndex(user => user.username === username);
+    if (currentUserIndex !== -1) {
+      setUserRank(currentUserIndex + 1);
+    } else {
+      setUserRank(null); // Set userRank to null if user not found
+    }
+
+    setLeaderboardData(sortedUsers.slice(0, 300).map((user, index) => ({
+      rank: index + 1,
+      initials: user.username?.substring(0, 2).toUpperCase() || "??",
+      name: user.username || "Unknown",
+      rocks: formatNumber((Number(user.balance) || 0) + (Number(user.refBonus) || 0)),
+      imageUrl: user.level?.imgUrl,
+    })));
+  };
+
+  setTotalUsers(formatNumber(allUsersData.length));
+  getLeaderboardData(allUsersData);
+}, [allUsersData, username]);
   
   const checkTaskCompletion = async (id, taskId) => {
     try {
@@ -294,13 +296,13 @@ const Ref = () => {
                   </div>
                   
                   <div className="flex-1 flex justify-center">
-                    {userRank > 0 && (
-                      <div className="bg-[#1F2942] px-4 py-1 rounded-full">
-                        <span className="text-[#FFD700] font-bold">
-                          Rank #{userRank}
-                        </span>
-                      </div>
-                    )}
+           {userRank !== null && (
+  <div className="bg-[#1F2942] px-4 py-1 rounded-full">
+    <span className="text-[#FFD700] font-bold">
+      Rank #{userRank}
+    </span>
+  </div>
+)}
                   </div>
                   
                   <div className="flex-1 text-right">
