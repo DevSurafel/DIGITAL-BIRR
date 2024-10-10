@@ -50,7 +50,7 @@ const Ref = () => {
   const [notifyBalance, setNotifyBalance] = useState(0);
   const [activeIndex, setActiveIndex] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [userRank, setUserRank] = useState("Not Ranked"); // State for user rank
+  const [userRank, setUserRank] = useState("Not Ranked");
 
   const taskID = "task_tele_1";
   const taskID2 = "task_tw_1";
@@ -215,10 +215,7 @@ const Ref = () => {
                 </h1>
               </div>
 
-              <div
-                onClick={() => handleMenu(1)}
-                className="w-full flex ml-[6px] space-x-1 items-center justify-center"
-              >
+              <div className="w-full flex ml-[6px] space-x-1 items-center justify-center">
                 <img src={level?.imgUrl} className="w-[25px] relative" alt="level" />
                 <h2 className="text-[#9d99a9] text-[20px] font-medium">
                   {level?.name}
@@ -258,7 +255,7 @@ const Ref = () => {
                       <p className="text-white font-bold">
                         {totalUsers} Holders
                       </p>
-                      <p className="text-white font-bold">Rank:#{item.rank} </p>
+                      <p className="text-white font-bold">Rank: #{userRank}</p>
                     </div>
                   </div>
                   <div>
@@ -267,9 +264,9 @@ const Ref = () => {
                 </div>
 
                 <div className="space-y-2">
-                  {leaderboardData.map((item, index) => (
+                  {leaderboardData.map((item) => (
                     <div
-                      key={index}
+                      key={item.rank}
                       className="flex justify-between items-center p-3 bg-[#1F2942] rounded-lg"
                     >
                       <div className="flex items-center space-x-4">
