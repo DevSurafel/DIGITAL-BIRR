@@ -34,7 +34,6 @@ const Ref = () => {
     setTaskCompleted2,
     user,
     username,
-    userNo,
     allUsersData = [],
     loading,
   } = useUser();
@@ -51,36 +50,13 @@ const Ref = () => {
   const [notifyBalance, setNotifyBalance] = useState(0);
   const [activeIndex, setActiveIndex] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [userRank, setUserRank] = useState("Not Ranked"); // State for user rank
 
   const taskID = "task_tele_1";
   const taskID2 = "task_tw_1";
 
   const handleMenu = (index) => {
     setActiveIndex(index);
-  };
-
-  const taskTelegram = () => {
-    setShowTaskTelegram(true);
-    const footerElement = document.getElementById("footermain");
-    if (footerElement) {
-      footerElement.style.zIndex = "50";
-    }
-  };
-
-  const taskTw = () => {
-    setShowTaskTw(true);
-    const footerElement = document.getElementById("footermain");
-    if (footerElement) {
-      footerElement.style.zIndex = "50";
-    }
-  };
-
-  const levelsAction = () => {
-    setShowLevels(true);
-    const footerElement = document.getElementById("footermain");
-    if (footerElement) {
-      footerElement.style.zIndex = "50";
-    }
   };
 
   const formatNumber = (num) => {
@@ -125,7 +101,7 @@ const Ref = () => {
 
     const getLeaderboardData = (users) => {
       if (!Array.isArray(users)) return [];
-      const sortedUsers = users.sort((a, b) => b.balance - a.balance);
+      const sortedUsers = users.filter(user => user.balance > 0).sort((a, b) => b.balance - a.balance);
       const topUsers = sortedUsers.slice(0, 300);
       return topUsers.map((user, index) => ({
         rank: index + 1,
@@ -136,9 +112,17 @@ const Ref = () => {
       }));
     };
 
-    setTotalUsers(formatBalance(allUsersData.length));
+    const calculateUserRank = (users) => {
+      const rankedUsers = users.filter(user => user.balance > 0)
+        .sort((a, b) => b.balance - a.balance);
+      const rankIndex = rankedUsers.findIndex(user => user.username === username);
+      setUserRank(rankIndex > -1 ? rankIndex + 1 : "Not Ranked");
+    };
+
+    setTotalUsers(formatNumber(allUsersData.length));
     setLeaderboardData(getLeaderboardData(allUsersData));
-  }, [allUsersData]);
+    calculateUserRank(allUsersData); // Calculate user rank
+  }, [allUsersData, username]);
 
   const checkTaskCompletion = async (id, taskId) => {
     try {
@@ -203,9 +187,6 @@ const Ref = () => {
     return null;
   };
 
-  // Determine User's Rank
-  const userRank = leaderboardData.findIndex((user) => user.username === username) + 1;
-
   return (
     <>
       {loading ? (
@@ -222,18 +203,12 @@ const Ref = () => {
               <div className="relative flex items-center justify-center space-x-2">
                 <div
                   id="congrat"
-                  className={`opacity-0 invisible w-[80%] absolute pl-10 ease-in-out duration-500 transition-all ${
-                    congrats ? 'opacity-100 visible' : ''
-                  }`}
+                  className={`opacity-0 invisible w-[80%] absolute pl-10 ease-in-out duration-500 transition-all ${congrats ? 'opacity-100 visible' : ''}`}
                 >
                   <img src={congratspic} alt="congrats" className="w-full" />
                 </div>
                 <div className="w-[50px] h-[50px]">
-                  <img
-                    src={coinSmall}
-                    className="w-full"
-                    alt="coin"
-                  />
+                  <img src={coinSmall} className="w-full" alt="coin" />
                 </div>
                 <h1 className="text-[#fff] text-[42px] font-extrabold">
                   {formatNumber(balance + refBonus)}
@@ -241,14 +216,10 @@ const Ref = () => {
               </div>
 
               <div
-                onClick={levelsAction}
+                onClick={() => handleMenu(1)}
                 className="w-full flex ml-[6px] space-x-1 items-center justify-center"
               >
-                <img
-                  src={level?.imgUrl}
-                  className="w-[25px] relative"
-                  alt="level"
-                />
+                <img src={level?.imgUrl} className="w-[25px] relative" alt="level" />
                 <h2 className="text-[#9d99a9] text-[20px] font-medium">
                   {level?.name}
                 </h2>
@@ -287,7 +258,7 @@ const Ref = () => {
                       <p className="text-white font-bold">
                         {totalUsers} Holders
                       </p>
-                      <p className="text-white font-bold">Rank: #{userRank || 'Not Ranked'}</p>
+                      <p className="text-white font-bold">Rank: #{userRank}</p>
                     </div>
                   </div>
                   <div>
@@ -361,22 +332,12 @@ const Ref = () => {
                             </div>
                             <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
                               <div>
-                                <img
-                                  src={user.level?.imgUrl}
-                                  alt="level"
-                                  className="w-[18px]"
-                                />
+                                <img src={user.level?.imgUrl} alt="level" className="w-[18px]" />
                               </div>
-                              <span className="font-medium text-[#9a96a6]">
-                                {user.level?.name}
-                              </span>
+                              <span className="font-medium text-[#9a96a6]">{user.level?.name}</span>
                               <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
                               <span className="w-[20px]">
-                                <img
-                                  src={coinSmall}
-                                  className="w-full"
-                                  alt="coin"
-                                />
+                                <img src={coinSmall} className="w-full" alt="coin" />
                               </span>
                               <span className="font-normal text-[#ffffff] text-[15px]">
                                 {formatNumber(user.balance)}
@@ -405,9 +366,7 @@ const Ref = () => {
             >
               <div className="w-full text-[#54d192] flex items-center space-x-2 px-4 bg-[#121620ef] h-[50px] rounded-[8px]">
                 <IoCheckmarkCircle size={24} className="" />
-                <span className="font-medium">
-                  {formatNumber(notifyBalance)}
-                </span>
+                <span className="font-medium">{formatNumber(notifyBalance)}</span>
               </div>
             </div>
           </div>
