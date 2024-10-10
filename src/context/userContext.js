@@ -52,6 +52,7 @@ export const UserProvider = ({ children }) => {
   // eslint-disable-next-line
   const [idme, setIdme] = useState("");
   const [totalCount, setTotalCount] = useState(0);
+  const [userRank, setUserRank] = useState(null);
   const [dividedCount, setDividedCount] = useState(0);
   const [users, setUsers] = useState(0);
   const [dividedUsers, setDividedUsers] = useState(0);
@@ -243,6 +244,21 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+
+const calculateUserRank = async () => {
+  if (!allUsersData || !username) return;
+
+  const sortedUsers = [...allUsersData].sort((a, b) => {
+    const totalBalanceA = (Number(a.balance) || 0) + (Number(a.refBonus) || 0);
+    const totalBalanceB = (Number(b.balance) || 0) + (Number(b.refBonus) || 0);
+    return totalBalanceB - totalBalanceA;
+  });
+
+  const currentUserIndex = sortedUsers.findIndex(user => user.username === username);
+  if (currentUserIndex !== -1) {
+    setUserRank(currentUserIndex + 1);
+  }
+};
 
   const updateReferrals = async (userRef) => {
     const userDoc = await getDoc(userRef);
