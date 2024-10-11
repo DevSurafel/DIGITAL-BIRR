@@ -18,7 +18,7 @@ import silverMedal from '../images/silver-medal.png';
 import bronzeMedal from '../images/bronze-medal.png';
 import congratspic from "../images/celebrate.gif";
 import coinSmall from '../images/coinsmall.png';
-import { useUser } from "../context/userContext";
+import { useUser  } from "../context/userContext";
 import ClaimLeveler from "../Components/ClaimLeveler";
 import Levels from "../Components/Levels";
 
@@ -36,7 +36,7 @@ const Ref = () => {
     username,
     allUsersData = [],
     loading,
-  } = useUser();
+  } = useUser ();
 
   const [showTaskTelegram, setShowTaskTelegram] = useState(false);
   const [showTaskTw, setShowTaskTw] = useState(false);
@@ -113,11 +113,11 @@ const Ref = () => {
     };
 
     const calculateUser Rank = (users) => {
-  const rankedUsers = users.filter(user => user.balance > 0)
-    .sort((a, b) => b.balance - a.balance);
-  const rankIndex = rankedUsers.findIndex(user => user.username === username);
-  setUserRank(rankIndex > -1 ? rankIndex + 1 : "Not Ranked");
-};
+      const rankedUsers = users.filter(user => user.balance > 0)
+        .sort((a, b) => b.balance - a.balance);
+      const rankIndex = rankedUsers.findIndex(user => user.username === username);
+      setUserRank(rankIndex > -1 ? rankIndex + 1 : "Not Ranked");
+    };
 
     setTotalUsers(formatNumber(allUsersData.length));
     setLeaderboardData(getLeaderboardData(allUsersData));
@@ -230,7 +230,7 @@ const Ref = () => {
                   onClick={() => handleMenu(1)}
                   className={`${
                     activeIndex === 1 ? "bg-cards" : ""
-                  } rounded-[6px] py-[12px] px-3 w-[50%] flex justify-center text-center items-center`}
+                  } rounded-[6px] py-[12px] px-3 w-[50%] flex justify-center text -center items-center`}
                 >
                   LeaderBoard
                 </div>
@@ -250,18 +250,18 @@ const Ref = () => {
                 className={`${activeIndex === 1 ? "flex" : "hidden"} alltaskscontainer flex-col w-full space-y-2`}
               >
                 <div className="w-full flex justify-between items-center rounded-lg">
-  <div className="flex items-center space-x-4">
-    <div className="flex flex-col w-full">
-      <p className="text-white font-bold">
-        {totalUsers} Holders
-      </p>
-    </div>
-  </div>
-  <div className="flex items-center space-x-4">
-    <p className="text-white font-bold">Rank: #{userRank}</p>
-    <p className="font-bold">Leagues</p>
-  </div>
-</div>
+                  <div className="flex items-center space-x-4">
+                    <div className="flex flex-col w-full">
+                      <p className="text-white font-bold">
+                        {totalUsers} Holders
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <p className="text-white font-bold">Rank: #{userRank}</p>
+                    <p className="font-bold">Leagues</p>
+                  </div>
+                </div>
 
                 <div className="space-y-2">
                   {leaderboardData.map((item) => (
@@ -281,7 +281,7 @@ const Ref = () => {
                             #{item.rank} {item.name}
                           </p>
                           <div className="flex items-center space-x-1">
-                            <span className="w-[20px] h-[20px]">
+                            <span className="w-[20px]">
                               <img src={coinSmall} className="w-full" alt="coin" />
                             </span>
                             <span className="font-medium">{item.rocks}</span>
