@@ -114,25 +114,22 @@ const Ref = () => {
     };
 
     const calculateUserRank = (users) => {
-      if (!Array.isArray(users) || users.length === 0) return;
+      if (!Array.isArray(users) || users.length === 0) {
+        setUserRank("Not Ranked");
+        return;
+      }
 
       const rankedUsers = users
         .filter(user => user.balance > 0)
         .sort((a, b) => b.balance - a.balance);
       
-      // Try to find by username first
-      let rankIndex = rankedUsers.findIndex(rankedUser => 
-        rankedUser.username === username
+      const foundUser = rankedUsers.find(rankedUser => 
+        rankedUser.username === username || rankedUser.firstname === user?.firstname
       );
 
-      // If not found by username, try to find by firstname
-      if (rankIndex === -1) {
-        rankIndex = rankedUsers.findIndex(rankedUser => 
-          rankedUser.firstname === user?.firstname
-        );
-      }
-
-      setUserRank(rankIndex > -1 ? rankIndex + 1 : "Not Ranked");
+      // Set rank if user found, otherwise set to "Not Ranked"
+      const rankIndex = foundUser ? rankedUsers.indexOf(foundUser) + 1 : "Not Ranked";
+      setUserRank(rankIndex);
     };
 
     setTotalUsers(formatNumber(allUsersData.length));
