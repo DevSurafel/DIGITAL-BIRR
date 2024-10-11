@@ -18,7 +18,7 @@ import silverMedal from '../images/silver-medal.png';
 import bronzeMedal from '../images/bronze-medal.png';
 import congratspic from "../images/celebrate.gif";
 import coinSmall from '../images/coinsmall.png';
-import { useUser  } from "../context/userContext";
+import { useUser   } from "../context/userContext";
 import ClaimLeveler from "../Components/ClaimLeveler";
 import Levels from "../Components/Levels";
 
@@ -36,7 +36,7 @@ const Ref = () => {
     username,
     allUsersData = [],
     loading,
-  } = useUser ();
+  } = useUser  ();
 
   const [showTaskTelegram, setShowTaskTelegram] = useState(false);
   const [showTaskTw, setShowTaskTw] = useState(false);
@@ -103,7 +103,7 @@ const Ref = () => {
       if (!Array.isArray(users)) return [];
       const sortedUsers = users.filter(user => user.balance > 0).sort((a, b) => b.balance - a.balance);
       const topUsers = sortedUsers.slice(0, 300);
-      return topUsers.map((user, index) => ({
+      return topUsers.map(( user, index) => ({
         rank: index + 1,
         initials: user.username?.substring(0, 2).toUpperCase() || "??",
         name: user.username || "Unknown",
@@ -112,7 +112,7 @@ const Ref = () => {
       }));
     };
 
-    const calculateUser Rank = (users) => {
+    const calculateUserRank = (users) => {
       const rankedUsers = users.filter(user => user.balance > 0)
         .sort((a, b) => b.balance - a.balance);
       const rankIndex = rankedUsers.findIndex(user => user.username === username);
@@ -164,7 +164,7 @@ const Ref = () => {
         const userDocRef = doc(db, "telegramUsers", userDocId);
         await updateDoc(userDocRef, { balance: newBalance });
       } else {
-        console.error("User document not found.");
+        console.error("User  document not found.");
       }
     } catch (error) {
       console.error("Error updating user count:", error);
@@ -220,7 +220,7 @@ const Ref = () => {
                 <h2 className="text-[#9d99a9] text-[20px] font-medium">
                   {level?.name}
                 </h2>
-                <MdOutlineKeyboardArrowRight className="w-[20px] h-[20px] text-[#9d99a9] mt-[2px]" />
+                <MdOutlineKeyboardArrowRight className="w-[20px] h-[20 px] text-[#9d99a9] mt-[2px]" />
               </div>
 
               <div className="bg-borders w-full px-5 h-[1px] !mt-5 !mb-5"></div>
@@ -331,7 +331,7 @@ const Ref = () => {
                               <div>
                                 <img src={user.level?.imgUrl} alt="level" className="w-[18px]" />
                               </div>
-                              <span className="font-medium text-[#9a96a6]">{user.level?.name}</span>
+                              <span className="font-medium text-[ #9a96a6]">{user.level?.name}</span>
                               <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
                               <span className="w-[20px]">
                                 <img src={coinSmall} className="w-full" alt="coin" />
@@ -342,7 +342,7 @@ const Ref = () => {
                             </div>
                           </div>
                           <div className="text-[#ffce68] font-semibold text-[14px]">
-                            +{formatNumber((user.balance / 100) * 10)}
+                           +{formatNumber((user.balance / 100) * 10)}
                           </div>
                           <div className="flex w-full mt-2 p-[4px] items-center bg-energybar rounded-[10px] border-[1px] border-borders">
                             <div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
