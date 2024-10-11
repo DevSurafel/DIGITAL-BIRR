@@ -258,7 +258,7 @@ const Ref = () => {
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <p className="text-white font-bold">Rank: #{userRank}</p>
+                    <p className="text-white font-bold">Your Rank: #{userRank}</p>
                   
                   </div>
                 <div className="flex items-center space-x-4">
