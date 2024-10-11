@@ -123,13 +123,23 @@ const Ref = () => {
         .filter(user => user.balance > 0)
         .sort((a, b) => b.balance - a.balance);
       
-      const foundUser = rankedUsers.find(rankedUser => 
+      let rankArray = [];
+      let currentRank = 1;
+
+      rankedUsers.forEach((user, index) => {
+        if (index > 0 && user.balance === rankedUsers[index - 1].balance) {
+          rankArray.push(rankArray[index - 1]); // Tied rank
+        } else {
+          rankArray.push(currentRank); // New rank
+          currentRank++; // Increment for next unique user
+        }
+      });
+
+      const foundUserIndex = rankedUsers.findIndex(rankedUser =>
         rankedUser.username === username || rankedUser.firstname === user?.firstname
       );
 
-      // Set rank if user found, otherwise set to "Not Ranked"
-      const rankIndex = foundUser ? rankedUsers.indexOf(foundUser) + 1 : "Not Ranked";
-      setUserRank(rankIndex);
+      setUserRank(foundUserIndex >= 0 ? rankArray[foundUserIndex] : "Not Ranked");
     };
 
     setTotalUsers(formatNumber(allUsersData.length));
