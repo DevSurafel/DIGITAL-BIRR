@@ -114,19 +114,21 @@ const Ref = () => {
     };
 
     const calculateUserRank = (users) => {
+      if (!Array.isArray(users) || users.length === 0) return;
+
       const rankedUsers = users
         .filter(user => user.balance > 0)
         .sort((a, b) => b.balance - a.balance);
       
-      // First try to find by username
+      // Try to find by username first
       let rankIndex = rankedUsers.findIndex(rankedUser => 
         rankedUser.username === username
       );
 
-      // If not found by username and user has firstname, try to find by firstname
-      if (rankIndex === -1 && user?.firstname) {
+      // If not found by username, try to find by firstname
+      if (rankIndex === -1) {
         rankIndex = rankedUsers.findIndex(rankedUser => 
-          rankedUser.firstname === user.firstname
+          rankedUser.firstname === user?.firstname
         );
       }
 
@@ -325,10 +327,49 @@ const Ref = () => {
                 </div>
               </div>
 
-              <div
+                      <div
                 className={`${activeIndex === 2 ? "flex" : "hidden"} alltaskscontainer flex-col w-full space-y-2`}
               >
-                {/* Referrals section remains the same */}
+                <div className="flex flex-col w-full">
+                  <h3 className="text-[22px] font-semibold ml-3 pb-[16px]">
+                    {referrals.length} Referrals
+                  </h3>
+                  <div className="flex flex-col w-full space-y-3">
+                    <div className="w-full h-[60vh] flex flex-col overflow-y-auto pb-[80px]">
+                      {referrals.map((user, index) => (
+                        <div
+                          key={index}
+                          className="bg-cards rounded-[10px] p-[14px] flex flex-wrap justify-between items-center mt-1"
+                        >
+                          <div className="flex flex-col flex-1 space-y-1">
+                            <div className="text-[#fff] pl-1 text-[16px] font-semibold">
+                              {user.username}
+                            </div>
+                            <div className="flex items-center space-x-1 text-[14px] text-[#e5e5e5]">
+                              <div>
+                                <img src={user.level?.imgUrl} alt="level" className="w-[18px]" />
+                              </div>
+                              <span className="font-medium text-[#9a96a6]">{user.level?.name}</span>
+                              <span className="bg-[#bdbdbd] w-[1px] h-[13px] mx-2"></span>
+                              <span className="w-[20px]">
+                                <img src={coinSmall} className="w-full" alt="coin" />
+                              </span>
+                              <span className="font-normal text-[#ffffff] text-[15px]">
+                                {formatNumber(user.balance)}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="text-[#ffce68] font-semibold text-[14px]">
+                            +{formatNumber((user.balance / 100) * 10)}
+                          </div>
+                          <div className="flex w-full mt-2 p-[4px] items-center bg-energybar rounded-[10px] border-[1px] border-borders">
+                            <div className="h-[10px] rounded-[8px] bg-btn w-[.5%]"></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
