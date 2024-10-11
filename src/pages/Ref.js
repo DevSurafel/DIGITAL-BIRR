@@ -327,7 +327,7 @@ const Ref = () => {
                 </div>
               </div>
 
-                      <div
+              <div
                 className={`${activeIndex === 2 ? "flex" : "hidden"} alltaskscontainer flex-col w-full space-y-2`}
               >
                 <div className="flex flex-col w-full">
