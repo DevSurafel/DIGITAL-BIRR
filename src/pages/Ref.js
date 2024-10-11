@@ -113,11 +113,11 @@ const Ref = () => {
     };
 
     const calculateUserRank = (users) => {
-      const rankedUsers = users.filter(user => user.balance > 0)
-        .sort((a, b) => b.balance - a.balance);
-      const rankIndex = rankedUsers.findIndex(user => user.username === username);
-      setUserRank(rankIndex > -1 ? rankIndex + 1 : "Not Ranked");
-    };
+  const rankedUsers = users.filter(user => user.balance > 0)
+    .sort((a, b) => b.balance - a.balance);
+  const rankIndex = rankedUsers.findIndex(user => user.username === username);
+  setUserRank(rankIndex > -1 ? rankIndex + 1 : "Not Ranked");
+};
 
     setTotalUsers(formatNumber(allUsersData.length));
     setLeaderboardData(getLeaderboardData(allUsersData));
