@@ -113,33 +113,24 @@ const Ref = () => {
       }));
     };
 
- const calculateUserRank = (users) => {
+    const calculateUserRank = (users) => {
       if (!Array.isArray(users) || users.length === 0) {
         setUserRank("Not Ranked");
         return;
       }
 
-      const rankedUsers = users
-        .filter(user => user.balance > 0)
+      const sortedUsers = users.filter(user => user.balance > 0)
         .sort((a, b) => b.balance - a.balance);
       
-      let rankArray = [];
-      let currentRank = 1;
-
-      rankedUsers.forEach((user, index) => {
-        if (index > 0 && user.balance === rankedUsers[index - 1].balance) {
-          rankArray.push(rankArray[index - 1]); // Tied rank
-        } else {
-          rankArray.push(currentRank); // New rank
-          currentRank++; // Increment for next unique user
-        }
-      });
-
-      const foundUserIndex = rankedUsers.findIndex(rankedUser =>
+      const userIndex = sortedUsers.findIndex(rankedUser =>
         rankedUser.username === username || rankedUser.firstname === user?.firstname
       );
 
-      setUserRank(foundUserIndex >= 0 ? rankArray[foundUserIndex] : "Not Ranked");
+      if (userIndex >= 0) {
+        setUserRank(userIndex + 1);
+      } else {
+        setUserRank("Not Ranked");
+      }
     };
 
     setTotalUsers(formatNumber(allUsersData.length));
@@ -269,24 +260,24 @@ const Ref = () => {
             </div>
 
             <div className="!mt-[204px] w-full h-[60vh] flex flex-col overflow-y-auto">
-            <div
-              className={`${activeIndex === 1 ? "flex" : "hidden"} alltaskscontainer flex-col w-full space-y-2`}
-            >
-              <div className="w-full flex justify-between items-center rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <div className="flex flex-col w-full">
-                    <p className="text-white font-bold">
-                      {totalUsers} Holders
-                    </p>
+              <div
+                className={`${activeIndex === 1 ? "flex" : "hidden"} alltaskscontainer flex-col w-full space-y-2`}
+              >
+                <div className="w-full flex justify-between items-center rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex flex-col w-full">
+                      <p className="text-white font-bold">
+                        {totalUsers} Holders
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <p className="text-white font-bold">Your Rank: #{userRank}</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <p className="font-bold">Leagues</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <p className="text-white font-bold">Your Rank: #{userRank}</p>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <p className="font-bold">Leagues</p>
-                </div>
-              </div>
 
                 <div className="space-y-2">
                   {leaderboardData.map((item) => (
