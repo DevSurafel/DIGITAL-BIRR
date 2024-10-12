@@ -280,13 +280,13 @@ const Ref = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <p className="text-white font-bold">Your Rank: #{userRank}</p>
+                  <div className="flex items-center space-x-4">  {leaderboardData.map((item) => (
+                    <p key={item.rank} className="text-white font-bold">Your Rank: #{item.rocks}</p>
                   </div>
                   <div className="flex items-center space-x-4">
                     <p className="font-bold">Leagues</p>
                   </div>
-                </div>
+                </div>)
 
                 <div className="space-y-2">
                   {leaderboardData.map((item) => (
