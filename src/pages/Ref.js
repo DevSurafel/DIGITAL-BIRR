@@ -127,7 +127,8 @@ const Ref = () => {
       );
 
       if (userIndex >= 0) {
-        setUserRank(userIndex + 1);
+        const calculatedRank = userIndex + 1;
+        setUserRank(calculatedRank > 300 ? "300+" : calculatedRank);
       } else {
         setUserRank("Not Ranked");
       }
