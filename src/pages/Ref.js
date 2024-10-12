@@ -101,43 +101,28 @@ const Ref = () => {
 
     const getLeaderboardData = (users) => {
       if (!Array.isArray(users)) return [];
-      const sortedUsers = users.filter(user => user.balance > 0)
-        .sort((a, b) => b.balance - a.balance);
+      const sortedUsers = users.filter(user => user.balance > 0).sort((a, b) => b.balance - a.balance);
       const topUsers = sortedUsers.slice(0, 300);
       return topUsers.map((user, index) => ({
         rank: index + 1,
-        initials: user.username?.substring(0, 2).toUpperCase() || user.firstname?.substring(0, 2).toUpperCase() || "??",
-        name: user.username || user.firstname || "Unknown",
+        initials: user.username?.substring(0, 2).toUpperCase() || "??",
+        name: user.username || "Unknown",
         rocks: formatBalance(user.balance),
         imageUrl: user.level?.imgUrl,
       }));
     };
 
     const calculateUserRank = (users) => {
-      if (!Array.isArray(users) || users.length === 0) {
-        setUserRank("Not Ranked");
-        return;
-      }
-
-      const sortedUsers = users.filter(user => user.balance > 0)
+      const rankedUsers = users.filter(user => user.balance > 0)
         .sort((a, b) => b.balance - a.balance);
-      
-      const userIndex = sortedUsers.findIndex(rankedUser =>
-        rankedUser.username === username || rankedUser.firstname === user?.firstname
-      );
-
-      if (userIndex >= 0) {
-        const calculatedRank = userIndex + 1;
-        setUserRank(calculatedRank > 300 ? "300+" : calculatedRank);
-      } else {
-        setUserRank("Not Ranked");
-      }
+      const rankIndex = rankedUsers.findIndex(user => user.username === username);
+      setUserRank(rankIndex > -1 ? rankIndex + 1 : "Not Ranked");
     };
 
     setTotalUsers(formatNumber(allUsersData.length));
     setLeaderboardData(getLeaderboardData(allUsersData));
-    calculateUserRank(allUsersData);
-  }, [allUsersData, username, user?.firstname]);
+    calculateUserRank(allUsersData); // Calculate user rank
+  }, [allUsersData, username]);
 
   const checkTaskCompletion = async (id, taskId) => {
     try {
@@ -270,12 +255,10 @@ const Ref = () => {
                       <p className="text-white font-bold">
                         {totalUsers} Holders
                       </p>
+                      <p className="text-white font-bold">Rank: #{userRank}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <p className="text-white font-bold">Your Rank: #{userRank}</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
+                  <div>
                     <p className="font-bold">Leagues</p>
                   </div>
                 </div>
@@ -298,7 +281,7 @@ const Ref = () => {
                             #{item.rank} {item.name}
                           </p>
                           <div className="flex items-center space-x-1">
-                            <span className="w-[20px]">
+                            <span className="w-[20px] h-[20px]">
                               <img src={coinSmall} className="w-full" alt="coin" />
                             </span>
                             <span className="font-medium">{item.rocks}</span>
