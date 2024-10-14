@@ -3,6 +3,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase'; // Adjust the path as needed
 import styled, { keyframes } from "styled-components";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import Animate from '../Components/Animate';
 import Spinner from '../Components/Spinner';
 import { useUser } from '../context/userContext';
 import Levels from '../Components/Levels';
@@ -384,7 +385,7 @@ const Plutos = () => {
       {loading ? (
         <Spinner />
       ) : (
-    
+        <Animate>
 
           <div
             className={`${showInvitation === true ? "visible" : "invisible"} absolute bottom-0 left-0 right-0 h-fit bg-[#1e2340f7] z-[100] rounded-tl-[20px] rounded-tr-[20px] flex justify-center px-4 py-5`}
@@ -625,7 +626,7 @@ const Plutos = () => {
             <Levels showLevels={showLevels} setShowLevels={setShowLevels} />
           </div>
 
-    
+        </Animate>
       )}
     </>
   );
