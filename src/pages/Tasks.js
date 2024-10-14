@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 
 // Components
-import Animate from "../Components/Animate";
+
 import Spinner from "../Components/Spinner";
 import ClaimLeveler from "../Components/ClaimLeveler";
 import Levels from "../Components/Levels";
