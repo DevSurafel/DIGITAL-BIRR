@@ -385,7 +385,7 @@ const Plutos = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <Animate>
+        
 
           <div
             className={`${showInvitation === true ? "visible" : "invisible"} absolute bottom-0 left-0 right-0 h-fit bg-[#1e2340f7] z-[100] rounded-tl-[20px] rounded-tr-[20px] flex justify-center px-4 py-5`}
@@ -626,7 +626,7 @@ const Plutos = () => {
             <Levels showLevels={showLevels} setShowLevels={setShowLevels} />
           </div>
 
-        </Animate>
+       
       )}
     </>
   );
