@@ -50,7 +50,7 @@ const Home = () => {
             <div className="flex flex-col w-full pt-8 space-y-3">
               <UserProvider>
                 
-                 
+    </Outlet>
     
             </UserProvider>
               <div id="footermain" className="flex flex-col bg-[#1a1f2e] space-y-6 fixed bottom-0 py-6 left-0 right-0 justify-center items-center px-5">
