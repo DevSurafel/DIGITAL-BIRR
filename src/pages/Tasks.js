@@ -245,7 +245,7 @@ const Tasks = () => {
   if (loading) return <Spinner />;
 
   return (
-    <Animate>
+    
       <div className="flex-col justify-center w-full px-5 space-y-3">
         {/* Header Section */}
         <div className="fixed top-0 left-0 right-0 px-5 pt-8">
@@ -333,7 +333,7 @@ const Tasks = () => {
         </div>
       </div>
       <Outlet />
-    </Animate>
+    
   );
 };
 
