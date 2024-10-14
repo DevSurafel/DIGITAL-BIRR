@@ -1,4 +1,4 @@
-import plutos from '../images/plutotap.svg'
+import qshare from '../images/qshare.png'
 import bronze from './bronze.webp';
 import Silver from '/silver.webp';
 import Silver from '/silver.webp';
@@ -16,9 +16,8 @@ import lihgt from '../images/lihgt.webp'
 // import plutos from '../images/'
 // import plutos from '../images/'
 // import plutos from '../images/'
-
 export {
-    plutos,
+    qshare,
     iron,
     bronze,
     Silver,
