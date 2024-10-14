@@ -45,11 +45,11 @@ Go back
 
     </button>
 <p className="text-[18px] flex space-x-1 pt-7 pb-5">
-   <span> Ops </span><PiSmileySadLight size="30px" className="text-[#c5d04c]"/> 
+   <span> Oops </span><PiSmileySadLight size="30px" className="text-[#c5d04c]"/> 
 
 </p>
 <p className="text-[18px] text-justsify">
-Looks Like Something went wrong, This Telegram App is still under Development, Kindly Click On Go back </p>
+Ssomething went wrong. We're currently under maintenance. Please click 'Go Back' to return. </p>
 
 
 </div>
