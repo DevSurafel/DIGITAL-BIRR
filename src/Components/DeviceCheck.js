@@ -7,10 +7,10 @@ const DeviceCheck = ({ children }) => {
         
        <div className='w-full pt-24 text-center flex flex-col space-y-3 justify-center items-center'>
         <p className='text-[28px] font-semibold'>
-            Mobile rocks for gaming 😎 Open on your mobile device to play now!
+            Mobile gaming at its best! Open on your phone and start playing now!
         </p>
-        <img src='/plutotap.svg'
-        alt="plutotaps"
+        <img src='/qshare.png'
+        alt="qrcode"
         className='w-[250px] rounded-[25px] border-[2px] border-[#0000ff]'
         />
        </div>
