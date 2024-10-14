@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 
 // Components
-
+import Animate from "../Components/Animate";
 import Spinner from "../Components/Spinner";
 import ClaimLeveler from "../Components/ClaimLeveler";
 import Levels from "../Components/Levels";
@@ -245,6 +245,7 @@ const Tasks = () => {
   if (loading) return <Spinner />;
 
   return (
+    <Animate>
     
       <div className="flex-col justify-center w-full px-5 space-y-3">
         {/* Header Section */}
@@ -333,7 +334,7 @@ const Tasks = () => {
         </div>
       </div>
       <Outlet />
-    
+            </Animate>
   );
 };
 
