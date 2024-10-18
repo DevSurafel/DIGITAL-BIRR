@@ -335,7 +335,7 @@ const Plutos = () => {
 
 
   const copyToClipboard = () => {
-    const reflink = `https://t.me/ENIGMA_TOOL_BOT?start=r${id}`;
+    const reflink = `https://t.me/digital_birr_bot?start=r${id}`;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard
         .writeText(reflink)
@@ -407,7 +407,7 @@ const Plutos = () => {
                   Your Invite Link
                 </h3>
                 <div className="text-[#9a96a6] text-[13px]">
-                  https://t.me/ENIGMA_TOOL_BOT?start=r{id}
+                  https://t.me/digital_birr_bot?start=r{id}
                 </div>
 
                 <div className="flex flex-1 items-center space-x-2">
