@@ -1,11 +1,10 @@
 body {
-  background: linear-gradient(to bottom, #10434f, #075566);
-  background-color: #7d5722;
+  background: linear-gradient(to bottom, #191b33, #1b202d);
+  background-color: #191b33;
   color: #fff;
   height: var(--tg-viewport-stable-height);
   touch-action: none; /* Prevent touch actions */
 }
-
 .cards__container {
   display: flex;
   flex-wrap: wrap;
