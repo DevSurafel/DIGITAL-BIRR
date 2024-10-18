@@ -13,7 +13,7 @@ const Animate = ({ children }) => {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.2, delay: 0.1 }}
+      transition={{ duration: 0.1, delay: 0.1 }}
       className=""
     >
       {children}
