@@ -116,8 +116,8 @@ body {
 
 .static-image {
   position: absolute;
-  width: 117px; /* Adjust size as needed */
-  height: 117px;
+  width: 118px; /* Adjust size as needed */
+  height: 118px;
   z-index: 50; /* Ensure it stays above the spinner */
 }
 
