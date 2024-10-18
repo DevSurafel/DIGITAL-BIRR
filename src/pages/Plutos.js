@@ -565,7 +565,7 @@ const Plutos = () => {
                         ref={imageRef}
                         src={require('../images/bcen.png')}
                         alt="Wobble"
-                        className="wobble-image !w-[270px] select-none"
+                        className="wobble-image !w-[250px] select-none"
                       />
                       {clicks.map((click) => (
                         <SlideUpText key={click.id} x={click.x} y={click.y}>
@@ -582,7 +582,7 @@ const Plutos = () => {
                         ref={imageRef}
                         src={require('../images/bcen.png')}
                         alt="Wobble"
-                        className="wobble-image !w-[270px] select-none"
+                        className="wobble-image !w-[250px] select-none"
                       />
                       {clicks.map((click) => (
                         <SlideUpText key={click.id} x={click.x} y={click.y}>
