@@ -126,7 +126,7 @@ body {
 .spin1{
 
   width: 140px;
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   height: 140px;
   position: relative;
   border-radius: 1000px;
@@ -138,7 +138,7 @@ body {
 
 .spin2{
 
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   position: absolute;
   width: 140px;
   height: 140px;
@@ -150,13 +150,13 @@ body {
 
 .spin3{
 
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   position: absolute;
   width: 140px;
   height: 140px;
   border-color: transparent;
   border-radius: 50%;
-  border-right-color: orange;
+  border-right-color: #21eb86;
   rotate: 70deg;
   z-index: 2;
 
@@ -164,13 +164,13 @@ body {
 
 .spin4{
 
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   position: absolute;
   width: 140px;
   height: 140px;
   border-color: transparent;
   border-radius: 50%;
-  border-right-color: orange;
+  border-right-color: #21eb86;
   rotate: 70deg;
   z-index: 2;
 
@@ -178,13 +178,13 @@ body {
 
 .spin5{
 
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   position: absolute;
   width: 140px;
   height: 140px;
   border-color: transparent;
   border-radius: 50%;
-  border-top-color: #383568;
+  border-top-color: #de911d;
   rotate: 218deg;
   z-index: 20;
 
@@ -192,13 +192,13 @@ body {
 
 .spin6{
 
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   position: absolute;
   width: 140px;
   height: 140px;
   border-color: transparent;
   border-radius: 50%;
-  border-top-color: #8580cf;
+  border-top-color: #de911d;
   rotate: 275deg;
   z-index: 20;
 
@@ -206,26 +206,26 @@ body {
 
 .spin7{
 
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   position: absolute;
   width: 140px;
   height: 140px;
   border-color: transparent;
   border-radius: 50%;
-  border-top-color: #bcb4a7;
+  border-top-color: #e62c5d;
   rotate: 32deg;
   z-index: 30;
 }
 
 .spin8{
 
-  border: 10px solid #383568;
+  border: 10px solid #29d0d9;
   position: absolute;
   width: 140px;
   height: 140px;
   border-color: transparent;
   border-radius: 50%;
-  border-top-color: #373568;
+  border-top-color: #a61177;
   rotate: -28deg;
   z-index: 30;
 
@@ -239,7 +239,7 @@ body {
   height: 140px;
   border-color: transparent;
   border-radius: 50%;
-  border-top-color: #373568;
+  border-top-color: #a61177;
   rotate: 41deg;
   z-index: 25;
 
