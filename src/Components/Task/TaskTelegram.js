@@ -1,4 +1,3 @@
-import claim from "../../images/claim.webp";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import {
@@ -10,7 +9,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useUser } from "../../context/userContext";
-// import { EnergyContext } from "../context/EnergyContext";
+import claim from "../../images/claim.webp";
 
 const TaskTelegram = ({ showModal, setShowModal }) => {
   const { id, balance, setBalance, taskCompleted, setTaskCompleted } = useUser();
@@ -22,10 +21,8 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
   const [showTaskButton, setShowTaskButton] = useState(true);
   const [counter, setCounter] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
-  const taskID = "task_tele_1"; // Assign a unique ID to this task
+  const taskID = "task_tele_1";
   const [openComplete, setOpenComplete] = useState(false);
-  const [isMissionButtonDisabled, setIsMissionButtonDisabled] = useState(true);
-
 
   useEffect(() => {
     const handleBackButtonClick = () => {
@@ -41,95 +38,79 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
       window.Telegram.WebApp.BackButton.offClick(handleBackButtonClick);
     }
 
-    // Cleanup handler when component unmounts
     return () => {
       window.Telegram.WebApp.BackButton.offClick(handleBackButtonClick);
     };
   }, [showModal, setShowModal]);
 
-
-
-
   useEffect(() => {
-
     if (id) {
       checkTaskCompletion(id, taskID).then((completed) => {
         setTaskCompleted(completed);
         if (completed) {
           setMessage("");
-          setIsMissionButtonDisabled(false);
+          setIsVerified(true);
         }
       });
     }
-    // eslint-disable-next-line
-  }, []);
-
-
+  }, [id, setTaskCompleted]);
 
   const handleTaskLinkClick = () => {
     window.open("https://t.me/+p9ThUnIaaV0wYzZk");
-
-    setTimeout(() => {
-      setShowTaskButton(false);
-    }, 2000);
+    setShowTaskButton(false);
     setTimeout(() => {
       setShowCheckButton(true);
     }, 2000);
   };
 
   const handleVerify = async () => {
-    // Clear any existing interval
     if (intervalId) {
       clearInterval(intervalId);
     }
 
-    const response = await fetch(
-      `https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getChatMember?chat_id=-1001379581156&user_id=${id}`
-    );
-    const data = await response.json();
+    try {
+      const response = await fetch(
+        `https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getChatMember?chat_id=-1001379581156&user_id=${id}`
+      );
+      const data = await response.json();
 
-    if (data.ok && (data.result.status === "member" || data.result.status === "administrator" || data.result.status === "creator")) {
-      setIsVerified(true);
-      setCounter(15);
-      setTimeout(() => {
+      if (data.ok && ["member", "administrator", "creator"].includes(data.result.status)) {
+        setIsVerified(true);
         setShowDoneButton(true);
-      }, 3000);
-      setTimeout(() => {
         setShowCheckButton(false);
-        setMessage("");
-        setIsMissionButtonDisabled(false);
-      }, 3000);
-    } else {
-      setTimeout(() => {
-        setMessage(
-          "Please join the Telegram channel first before you can claim this task bonus."
-        );
-      }, 1000);
-      setCounter(15);
-      const newIntervalId = setInterval(() => {
-        setCounter((prevCounter) => {
-          if (prevCounter === 1) {
-            clearInterval(newIntervalId);
-            setShowCheckButton(false);
-            setShowTaskButton(true);
-            setCounter(null);
-          }
-          return prevCounter - 1;
-        });
-      }, 2000);
-      setIntervalId(newIntervalId);
+        setMessage("Verification successful! You can now claim your reward.");
+      } else {
+        setMessage("Please join the Telegram channel before claiming the reward.");
+        startCountdown();
+      }
+    } catch (error) {
+      console.error("Error verifying membership:", error);
+      setMessage("An error occurred. Please try again later.");
+      startCountdown();
     }
+  };
+
+  const startCountdown = () => {
+    setCounter(15);
+    const newIntervalId = setInterval(() => {
+      setCounter((prevCounter) => {
+        if (prevCounter === 1) {
+          clearInterval(newIntervalId);
+          setShowCheckButton(false);
+          setShowTaskButton(true);
+          return null;
+        }
+        return prevCounter - 1;
+      });
+    }, 1000);
+    setIntervalId(newIntervalId);
   };
 
   const checkTaskCompletion = async (id, taskId) => {
     try {
       const userTaskDocRef = doc(db, "userTasks", `${id}_${taskId}`);
       const docSnap = await getDoc(userTaskDocRef);
-      if (docSnap.exists()) {
-        return docSnap.data().completed;
-      } else {
-        return false;
-      }
+      return docSnap.exists() ? docSnap.data().completed : false;
     } catch (e) {
       console.error("Error checking task completion: ", e);
       return false;
@@ -144,7 +125,6 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
         { userId: id, taskId: taskId, completed: isCompleted },
         { merge: true }
       );
-      // console.log('Task completion status saved to Firestore.');
     } catch (e) {
       console.error("Error saving task completion status: ", e);
     }
@@ -164,7 +144,6 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
       if (userDocId) {
         const userDocRef = doc(db, "telegramUsers", userDocId);
         await updateDoc(userDocRef, { balance: newBalance });
-        // console.log('User count updated in Firestore.');
       } else {
         console.error("User document not found.");
       }
@@ -187,11 +166,8 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
       const newCount = balance + 50000;
       setBalance(newCount);
       setMessage("");
-      setIsMissionButtonDisabled(true); // Optionally disable the button again after mission completion
       await saveTaskCompletionToFirestore(id, taskID, true);
-      // Update the user's count in Firestore
       await updateUserCountInFirestore(id, newCount);
-
       setTaskCompleted(true);
     } else {
       setMessage("Please verify the task first.");
@@ -203,24 +179,16 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
     document.getElementById("footermain").style.zIndex = "";
   };
 
-
   return (
     <>
-      {showModal ? (
+      {showModal && (
         <div className="fixed z-50 left-0 right-0 top-0 bottom-0 flex justify-center taskbg px-[16px] h-full">
-          <div className={`w-full flex flex-col items-center justify-start`}>
-            <div className="flex justify-start w-full py-2">
-              {/* <button
-                                className="text-[#e4e4e4] pb-2 transition-colors duration-300 flex items-center space-x-1"
-                                onClick={closeTask}
-                            >
-                                <IoIosArrowBack size={20} className='' /> <span className='text-[18px] font-medium '>Back</span>
-                            </button> */}
-            </div>
+          <div className="w-full flex flex-col items-center justify-start">
+            <div className="flex justify-start w-full py-2"></div>
             <div className="flex flex-col w-full">
               <h1 className="text-[20px] font-semibold">Join Our Telegram Channel</h1>
               <p className="text-[#9a96a6] text-[16px] font-medium pt-1 pb-10">
-                We regularly share valuable  content on our channel. Join us there and get rewardes
+                We regularly share valuable content on our channel. Join us there and get rewarded
               </p>
 
               <p className="w-full text-center text-[14px] font-semibold text-[#49ee49] pb-4">
@@ -257,115 +225,97 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
                   </div>
                 </div>
                 <div className="">
-                  {taskCompleted ? (
-                    <></>
-                  ) : (
+                  {!taskCompleted && (
                     <>
                       {showTaskButton && (
                         <button
                           onClick={handleTaskLinkClick}
-                          className={`flex font-medium bg-btn hover:bg-[#1e3356] ease-in duration-300 py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]`}
+                          className="flex font-medium bg-btn hover:bg-[#1e3356] ease-in duration-300 py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
                         >
                           Go
                         </button>
                       )}
+                      {showCheckButton && (
+                        <button
+                          onClick={handleVerify}
+                          className="flex font-medium bg-btn py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
+                        >
+                          <span>Check</span>
+                          {counter !== null && (
+                            <span className="text-[#b0b0b0] pointer-events-none select-none">
+                              ing {counter}s
+                            </span>
+                          )}
+                        </button>
+                      )}
+                      {showDoneButton && (
+                        <button
+                          id="done"
+                          className="text-[#7cf47c] font-medium py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
+                        >
+                          Done
+                        </button>
+                      )}
                     </>
                   )}
-
-                  {showCheckButton && (
-                    <button
-                      onClick={handleVerify}
-                      className="flex font-medium bg-btn py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
-                    >
-                      <span> Check</span>
-                      <span className="text-[#b0b0b0] pointer-events-none select-none">
-                        {counter !== null && (
-                          <>
-                            <span className="text-[#fff]">ing</span>
-                            {` ${counter}s`}
-                          </>
-                        )}
-                      </span>
-                    </button>
-                  )}
-                  {showDoneButton && (
-                    <button
-                      id="done"
-                      className="text-[#7cf47c] font-medium py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
-                    >
-                      Done
-                    </button>
-                  )}
-
-                  {taskCompleted && <></>}
                 </div>
               </div>
               {taskCompleted ? (
-                <>
-                  <button
-                    className={`my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium text-[#6a6978] bg-btn2`}
-                  >
-                    Mission Completed
-                  </button>
-                </>
+                <button className="my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium text-[#6a6978] bg-btn2">
+                  Mission Completed
+                </button>
               ) : (
-                <>
-                  <button
-                    onClick={() => handleComplete(true)}
-                    disabled={isMissionButtonDisabled}
-                    className={`my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium 
-                                    ${isMissionButtonDisabled
-                        ? "text-[#6a6978] bg-btn2"
-                        : "text-[#f4f4f4] bg-btn"
-                      }`}
-                  >
-                    Finish Mission
-                  </button>
-                </>
+                <button
+                  onClick={() => handleComplete(true)}
+                  disabled={!isVerified}
+                  className={`my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium 
+                    ${!isVerified ? "text-[#6a6978] bg-btn2" : "text-[#f4f4f4] bg-btn"}`}
+                >
+                  Finish Mission
+                </button>
               )}
             </div>
 
-            <div
-              className={`${openComplete === true ? "visible" : "invisible"
-                } absolute bottom-0 left-0 right-0 h-[76vh] bg-[#1e2340f7] z-[100] rounded-tl-[20px] rounded-tr-[20px] flex justify-center px-4 py-5`}
-            >
-              <div className="flex flex-col justify-between w-full py-8">
-                <div className="flex flex-col items-center justify-center w-full">
-                  <div className="w-[120px] h-[120px] rounded-[14px] bg-[#252e57] flex items-center justify-center">
-                    <img alt="claim" src={claim} className="" />
-                  </div>
-                  <h3 className="font-semibold text-[28px] py-4">
-                    Congratulations
-                  </h3>
-                  <p className="pb-6 text-[#9a96a6] text-[16px]">
-                    You have successfully completed the mission
-                  </p>
-
-                  <div className="flex items-center flex-1 space-x-2">
-                    <div className="">
-                      <img
-                        src={require('../../images/coinsmall.png')}
-                        className="w-[25px]"
-                        alt="Coin Icon"
-                      />
+            {openComplete && (
+              <div className="absolute bottom-0 left-0 right-0 h-[76vh] bg-[#1e2340f7] z-[100] rounded-tl-[20px] rounded-tr-[20px] flex justify-center px-4 py-5">
+                <div className="flex flex-col justify-between w-full py-8">
+                  <div className="flex flex-col items-center justify-center w-full">
+                    <div className="w-[120px] h-[120px] rounded-[14px] bg-[#252e57] flex items-center justify-center">
+                      <img alt="claim" src={claim} className="" />
                     </div>
-                    <div className="font-bold text-[20px]">50 000</div>
-                  </div>
-                </div>
+                    <h3 className="font-semibold text-[28px] py-4">
+                      Congratulations
+                    </h3>
+                    <p className="pb-6 text-[#9a96a6] text-[16px]">
+                      You have successfully completed the mission
+                    </p>
 
-                <div className="flex justify-center w-full pb-12">
-                  <button
-                    onClick={finishMission}
-                    className="bg-gradient-to-b from-[#3a5fd4] to-[#5078e0] w-full py-5 px-3 flex items-center justify-center text-center rounded-[12px] font-semibold text-[22px]"
-                  >
-                    Claim
-                  </button>
+                    <div className="flex items-center flex-1 space-x-2">
+                      <div className="">
+                        <img
+                          src={require('../../images/coinsmall.png')}
+                          className="w-[25px]"
+                          alt="Coin Icon"
+                        />
+                      </div>
+                      <div className="font-bold text-[20px]">50 000</div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center w-full pb-12">
+                    <button
+                      onClick={finishMission}
+                      className="bg-gradient-to-b from-[#3a5fd4] to-[#5078e0] w-full py-5 px-3 flex items-center justify-center text-center rounded-[12px] font-semibold text-[22px]"
+                    >
+                      Claim
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };
