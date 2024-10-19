@@ -12,6 +12,7 @@ import {
 import { useUser } from "../../context/userContext";
 // import { EnergyContext } from "../context/EnergyContext";
 
+
 const TaskTelegram = ({ showModal, setShowModal }) => {
   const { id, balance, setBalance, taskCompleted, setTaskCompleted } = useUser();
 
