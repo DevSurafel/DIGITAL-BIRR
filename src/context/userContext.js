@@ -148,7 +148,7 @@ export const UserProvider = ({ children }) => {
       const { id: userId, username, first_name: firstName, last_name: lastName } = telegramUser;
 
       // Use first name and ID as username if no Telegram username exists
-      const finalUsername = username || `${firstName}_${userId}`;
+      const finalUsername = username || `${firstName}`;
 
       try {
         const userRef = doc(db, 'telegramUsers', userId.toString());
