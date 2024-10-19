@@ -84,6 +84,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
       clearInterval(intervalId);
     }
 
+    
     const response = await fetch(
       `https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getChatMember?chat_id=-1001379581156&user_id=${id}`
     );
