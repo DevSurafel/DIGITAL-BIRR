@@ -3,7 +3,7 @@ const { Telegraf } = require("telegraf");
 const web_link = "https://digital-birr.netlify.app/";
 const community_link = "https://t.me/+p9ThUnIaaV0wYzZk";
 
-const bot = new Telegraf(process.env.REACT_APP_BOT_TOKEN);
+const bot = new Telegraf(process.env.REACT_APP_TELEGRAM_BOT_TOKEN);
 
 const welcomeMessage = (user) => {
   const userName = user.username ? `@${user.username}` : user.first_name;
