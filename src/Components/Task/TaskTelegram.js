@@ -10,6 +10,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useUser } from "../../context/userContext";
+// import { EnergyContext } from "../context/EnergyContext";
 
 const TaskTelegram = ({ showModal, setShowModal }) => {
   const { id, balance, setBalance, taskCompleted, setTaskCompleted } = useUser();
@@ -20,9 +21,11 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
   const [message, setMessage] = useState("");
   const [showTaskButton, setShowTaskButton] = useState(true);
   const [counter, setCounter] = useState(null);
-  const taskID = "task_tele_1";
+  const [intervalId, setIntervalId] = useState(null);
+  const taskID = "task_tele_1"; // Assign a unique ID to this task
   const [openComplete, setOpenComplete] = useState(false);
   const [isMissionButtonDisabled, setIsMissionButtonDisabled] = useState(true);
+
 
   useEffect(() => {
     const handleBackButtonClick = () => {
@@ -38,57 +41,83 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
       window.Telegram.WebApp.BackButton.offClick(handleBackButtonClick);
     }
 
+    // Cleanup handler when component unmounts
     return () => {
       window.Telegram.WebApp.BackButton.offClick(handleBackButtonClick);
     };
   }, [showModal, setShowModal]);
 
+
+
+
   useEffect(() => {
+
     if (id) {
       checkTaskCompletion(id, taskID).then((completed) => {
         setTaskCompleted(completed);
         if (completed) {
           setMessage("");
           setIsMissionButtonDisabled(false);
-          setShowTaskButton(false);
-          setShowDoneButton(true);
         }
       });
     }
-  }, [id, setTaskCompleted]);
+    // eslint-disable-next-line
+  }, []);
+
+
 
   const handleTaskLinkClick = () => {
     window.open("https://t.me/+p9ThUnIaaV0wYzZk");
-    setShowTaskButton(false);
-    setShowCheckButton(true);
+
+    setTimeout(() => {
+      setShowTaskButton(false);
+    }, 2000);
+    setTimeout(() => {
+      setShowCheckButton(true);
+    }, 2000);
   };
 
   const handleVerify = async () => {
+    // Clear any existing interval
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+
     const response = await fetch(
-     `https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getChatMember?chat_id=-1001379581156&user_id=${id}`
+      `https://api.telegram.org/bot7855740816:AAFNYuqct3l3uSG18uW_3IMPXKuSHw5LC5k/getChatMember?chat_id=-1001379581156&user_id=${id}`
     );
     const data = await response.json();
 
-    if (data.ok && ["member", "administrator", "creator"].includes(data.result.status)) {
+    if (data.ok && (data.result.status === "member" || data.result.status === "administrator" || data.result.status === "creator")) {
       setIsVerified(true);
-      setShowCheckButton(false);
-      setShowDoneButton(true);
-      setMessage("");
-      setIsMissionButtonDisabled(false);
-    } else {
-      setMessage("Please join the Telegram channel first before you can claim this task bonus.");
       setCounter(15);
-      const countdownInterval = setInterval(() => {
+      setTimeout(() => {
+        setShowDoneButton(true);
+      }, 3000);
+      setTimeout(() => {
+        setShowCheckButton(false);
+        setMessage("");
+        setIsMissionButtonDisabled(false);
+      }, 3000);
+    } else {
+      setTimeout(() => {
+        setMessage(
+          "Please join the Telegram channel first before you can claim this task bonus."
+        );
+      }, 1000);
+      setCounter(15);
+      const newIntervalId = setInterval(() => {
         setCounter((prevCounter) => {
           if (prevCounter === 1) {
-            clearInterval(countdownInterval);
+            clearInterval(newIntervalId);
             setShowCheckButton(false);
             setShowTaskButton(true);
-            return null;
+            setCounter(null);
           }
           return prevCounter - 1;
         });
-      }, 1000);
+      }, 2000);
+      setIntervalId(newIntervalId);
     }
   };
 
@@ -115,6 +144,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
         { userId: id, taskId: taskId, completed: isCompleted },
         { merge: true }
       );
+      // console.log('Task completion status saved to Firestore.');
     } catch (e) {
       console.error("Error saving task completion status: ", e);
     }
@@ -134,6 +164,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
       if (userDocId) {
         const userDocRef = doc(db, "telegramUsers", userDocId);
         await updateDoc(userDocRef, { balance: newBalance });
+        // console.log('User count updated in Firestore.');
       } else {
         console.error("User document not found.");
       }
@@ -143,22 +174,24 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
   };
 
   const finishMission = async () => {
-    if (isVerified) {
-      setShowModal(false);
-      setOpenComplete(true);
-      document.getElementById("congrat").style.opacity = "1";
-      document.getElementById("congrat").style.visibility = "visible";
-      setTimeout(() => {
-        document.getElementById("congrat").style.opacity = "0";
-        document.getElementById("congrat").style.visibility = "hidden";
-      }, 2000);
+    setShowModal(false);
+    setOpenComplete(false);
+    document.getElementById("congrat").style.opacity = "1";
+    document.getElementById("congrat").style.visibility = "visible";
+    setTimeout(() => {
+      document.getElementById("congrat").style.opacity = "0";
+      document.getElementById("congrat").style.visibility = "invisible";
+    }, 2000);
 
-      const newBalance = balance + 50000;
-      setBalance(newBalance);
+    if (isVerified) {
+      const newCount = balance + 50000;
+      setBalance(newCount);
       setMessage("");
-      setIsMissionButtonDisabled(true);
+      setIsMissionButtonDisabled(true); // Optionally disable the button again after mission completion
       await saveTaskCompletionToFirestore(id, taskID, true);
-      await updateUserCountInFirestore(id, newBalance);
+      // Update the user's count in Firestore
+      await updateUserCountInFirestore(id, newCount);
+
       setTaskCompleted(true);
     } else {
       setMessage("Please verify the task first.");
@@ -166,23 +199,28 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
   };
 
   const handleComplete = () => {
-    if (!isMissionButtonDisabled) {
-      finishMission();
-    }
+    setOpenComplete(true);
+    document.getElementById("footermain").style.zIndex = "";
   };
+
 
   return (
     <>
       {showModal ? (
         <div className="fixed z-50 left-0 right-0 top-0 bottom-0 flex justify-center taskbg px-[16px] h-full">
-          <div className="w-full flex flex-col items-center justify-start">
+          <div className={`w-full flex flex-col items-center justify-start`}>
             <div className="flex justify-start w-full py-2">
-              {/* Back button removed as it's handled by Telegram's WebApp */}
+              {/* <button
+                                className="text-[#e4e4e4] pb-2 transition-colors duration-300 flex items-center space-x-1"
+                                onClick={closeTask}
+                            >
+                                <IoIosArrowBack size={20} className='' /> <span className='text-[18px] font-medium '>Back</span>
+                            </button> */}
             </div>
             <div className="flex flex-col w-full">
               <h1 className="text-[20px] font-semibold">Join Our Telegram Channel</h1>
               <p className="text-[#9a96a6] text-[16px] font-medium pt-1 pb-10">
-                We regularly share valuable content on our channel. Join us there and get rewarded
+                We regularly share valuable  content on our channel. Join us there and get rewardes
               </p>
 
               <p className="w-full text-center text-[14px] font-semibold text-[#49ee49] pb-4">
@@ -210,6 +248,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
                     <span className="font-semibold">
                       Join the Telegram Channel
                     </span>
+
                     {message && (
                       <span className="text-[#ea5b48] text-[12px] pr-8">
                         {message}
@@ -218,59 +257,76 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
                   </div>
                 </div>
                 <div className="">
-                  {!taskCompleted && (
+                  {taskCompleted ? (
+                    <></>
+                  ) : (
                     <>
                       {showTaskButton && (
                         <button
                           onClick={handleTaskLinkClick}
-                          className="flex font-medium bg-btn hover:bg-[#1e3356] ease-in duration-300 py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
+                          className={`flex font-medium bg-btn hover:bg-[#1e3356] ease-in duration-300 py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]`}
                         >
                           Go
                         </button>
                       )}
-                      {showCheckButton && (
-                        <button
-                          onClick={handleVerify}
-                          className="flex font-medium bg-btn py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
-                        >
-                          <span>Check</span>
-                          {counter !== null && (
-                            <span className="text-[#b0b0b0] pointer-events-none select-none">
-                              ing {counter}s
-                            </span>
-                          )}
-                        </button>
-                      )}
-                      {showDoneButton && (
-                        <button
-                          id="done"
-                          className="text-[#7cf47c] font-medium py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
-                        >
-                          Done
-                        </button>
-                      )}
                     </>
                   )}
+
+                  {showCheckButton && (
+                    <button
+                      onClick={handleVerify}
+                      className="flex font-medium bg-btn py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
+                    >
+                      <span> Check</span>
+                      <span className="text-[#b0b0b0] pointer-events-none select-none">
+                        {counter !== null && (
+                          <>
+                            <span className="text-[#fff]">ing</span>
+                            {` ${counter}s`}
+                          </>
+                        )}
+                      </span>
+                    </button>
+                  )}
+                  {showDoneButton && (
+                    <button
+                      id="done"
+                      className="text-[#7cf47c] font-medium py-[6px] px-4 rounded-[8px] items-center justify-center text-[16px]"
+                    >
+                      Done
+                    </button>
+                  )}
+
+                  {taskCompleted && <></>}
                 </div>
               </div>
               {taskCompleted ? (
-                <button className="my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium text-[#6a6978] bg-btn2">
-                  Mission Completed
-                </button>
+                <>
+                  <button
+                    className={`my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium text-[#6a6978] bg-btn2`}
+                  >
+                    Mission Completed
+                  </button>
+                </>
               ) : (
-                <button
-                  onClick={handleComplete}
-                  disabled={isMissionButtonDisabled}
-                  className={`my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium 
-                    ${isMissionButtonDisabled ? "text-[#6a6978] bg-btn2" : "text-[#f4f4f4] bg-btn"}`}
-                >
-                  Finish Mission
-                </button>
+                <>
+                  <button
+                    onClick={() => handleComplete(true)}
+                    disabled={isMissionButtonDisabled}
+                    className={`my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium 
+                                    ${isMissionButtonDisabled
+                        ? "text-[#6a6978] bg-btn2"
+                        : "text-[#f4f4f4] bg-btn"
+                      }`}
+                  >
+                    Finish Mission
+                  </button>
+                </>
               )}
             </div>
 
             <div
-              className={`${openComplete ? "visible" : "invisible"
+              className={`${openComplete === true ? "visible" : "invisible"
                 } absolute bottom-0 left-0 right-0 h-[76vh] bg-[#1e2340f7] z-[100] rounded-tl-[20px] rounded-tr-[20px] flex justify-center px-4 py-5`}
             >
               <div className="flex flex-col justify-between w-full py-8">
@@ -299,7 +355,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
 
                 <div className="flex justify-center w-full pb-12">
                   <button
-                    onClick={() => setOpenComplete(false)}
+                    onClick={finishMission}
                     className="bg-gradient-to-b from-[#3a5fd4] to-[#5078e0] w-full py-5 px-3 flex items-center justify-center text-center rounded-[12px] font-semibold text-[22px]"
                   >
                     Claim
