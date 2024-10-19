@@ -456,7 +456,7 @@ const Tasks = () => {
 
         completed={taskCompleted3}
 
-        onClick={() => toggleModal('cat')}
+        onClick={() => toggleModal('corn')}
 
       />
 
