@@ -57,7 +57,6 @@ export const UserProvider = ({ children }) => {
   const [dividedUsers, setDividedUsers] = useState(0);
   const [taskCompleted, setTaskCompleted] = useState(false);
   const [taskCompleted2, setTaskCompleted2] = useState(false);
-  const [taskCompleted3, setTaskCompleted3] = useState(false);
   const [profitPerHour, setProfitPerHour] = useState(0);
   const [allUsersData, setAllUsersData] = useState([]);
 
@@ -148,7 +147,7 @@ export const UserProvider = ({ children }) => {
       const { id: userId, username, first_name: firstName, last_name: lastName } = telegramUser;
 
       // Use first name and ID as username if no Telegram username exists
-      const finalUsername = username || `${firstName}`;
+      const finalUsername = username || `${firstName}_${userId}`;
 
       try {
         const userRef = doc(db, 'telegramUsers', userId.toString());
@@ -670,8 +669,6 @@ export const UserProvider = ({ children }) => {
       allUsersData,
       taskCompleted2,
       setTaskCompleted2,
-      taskCompleted3,
-      setTaskCompleted3,
       setFullTank,
       timeStaTank,
       setTimeStaTank,
