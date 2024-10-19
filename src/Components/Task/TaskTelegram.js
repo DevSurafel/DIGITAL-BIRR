@@ -63,31 +63,12 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
     }, 2000);
   };
 
-  const handleVerify = async () => {
+  const handleVerify = () => {
     if (intervalId) {
       clearInterval(intervalId);
     }
-
-    try {
-      const response = await fetch(
-        `https://api.telegram.org/bot${process.env.REACT_APP_TELEGRAM_BOT_TOKEN}/getChatMember?chat_id=-1001379581156&user_id=${id}`
-      );
-      const data = await response.json();
-
-      if (data.ok && ["member", "administrator", "creator"].includes(data.result.status)) {
-        setIsVerified(true);
-        setShowDoneButton(true);
-        setShowCheckButton(false);
-        setMessage("Verification successful! You can now claim your reward.");
-      } else {
-        setMessage("Please join the Telegram channel before claiming the reward.");
-        startCountdown();
-      }
-    } catch (error) {
-      console.error("Error verifying membership:", error);
-      setMessage("An error occurred. Please try again later.");
-      startCountdown();
-    }
+    setMessage("Verifying your membership...");
+    startCountdown();
   };
 
   const startCountdown = () => {
@@ -97,7 +78,9 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
         if (prevCounter === 1) {
           clearInterval(newIntervalId);
           setShowCheckButton(false);
-          setShowTaskButton(true);
+          setShowDoneButton(true);
+          setIsVerified(true);
+          setMessage("Verification successful! You can now claim your reward.");
           return null;
         }
         return prevCounter - 1;
@@ -266,7 +249,7 @@ const TaskTelegram = ({ showModal, setShowModal }) => {
                 </button>
               ) : (
                 <button
-                  onClick={() => handleComplete(true)}
+                  onClick={handleComplete}
                   disabled={!isVerified}
                   className={`my-6 w-full py-5 px-3 flex items-center rounded-[12px] justify-center text-center text-[20px] font-medium 
                     ${!isVerified ? "text-[#6a6978] bg-btn2" : "text-[#f4f4f4] bg-btn"}`}
