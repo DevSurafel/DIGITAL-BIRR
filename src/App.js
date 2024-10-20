@@ -1,18 +1,15 @@
 // App.js
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MaintenanceWrapper from './components/MaintenanceWrapper';
-
 function App() {
   return (
-    <Router>
-      <MaintenanceWrapper isInMaintenance={true}>
+    <MaintenanceWrapper isInMaintenance={true}>
+      {/* Your entire app goes here */}
+      <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
           {/* Other routes */}
         </Routes>
-      </MaintenanceWrapper>
-    </Router>
+      </Router>
+    </MaintenanceWrapper>
   );
 }
 
