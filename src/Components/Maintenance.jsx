@@ -8,12 +8,12 @@ const Maintenance = () => {
       <div className="w-full max-w-md bg-[#1e2340] text-slate-100 relative rounded-lg p-6 shadow-lg border border-[#2a2f4a]">
         <div className="flex flex-col items-center gap-6 text-center">
           <div className="flex items-center gap-2 text-xl font-medium">
-            <span>Under Development</span>
+            <span>Under Maintenance </span>
             <FrownIcon className="h-7 w-7 text-yellow-400" />
           </div>
 
           <p className="text-lg text-slate-300">
-            Our website is currently under development. 
+            BIRR is currently under maintenance. 
             We'll be back soon with something amazing!
           </p>
 
