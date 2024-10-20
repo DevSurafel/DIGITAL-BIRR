@@ -1,20 +1,23 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { X, FrownIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-// This component will wrap your entire app
 const MaintenanceWrapper = ({ children, isInMaintenance = true }) => {
+  // Use useLocation hook to get current path
+  const location = useLocation();
+  
   // If not in maintenance, render children normally
   if (!isInMaintenance) {
     return children;
   }
 
-  // Optional: You can define specific routes/paths that should bypass maintenance mode
+  // Define paths that should bypass maintenance mode
   const allowedPaths = ['/admin', '/login'];
-  const currentPath = window.location.pathname;
   
-  if (allowedPaths.includes(currentPath)) {
+  // Check if current path should bypass maintenance
+  if (allowedPaths.includes(location.pathname)) {
     return children;
   }
 
@@ -32,12 +35,10 @@ const MaintenanceWrapper = ({ children, isInMaintenance = true }) => {
               Our website is currently under development. We'll be back soon with something amazing!
             </p>
 
-            {/* Optional: Add an estimated time or contact information */}
             <p className="text-sm text-slate-400">
               Expected completion: [Your Timeline]
             </p>
             
-            {/* Optional: Add contact information or alternative ways to reach you */}
             <div className="text-sm text-slate-400">
               Need immediate assistance? 
               <a href="mailto:your@email.com" className="text-blue-400 hover:text-blue-300 ml-1">
