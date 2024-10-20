@@ -22,7 +22,7 @@ const Maintenance = () => {
           </div>
 
           <p className="text-lg">
-            BIRR is currently under maintenance. <\br>
+            BIRR is currently under maintenance. <br/>
             We'll be back soon with something amazing!
           </p>
 
