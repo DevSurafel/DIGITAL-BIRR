@@ -588,7 +588,7 @@ const Ref = () => {
 
                       <p className="text-white font-bold">
 
-                        {totalUsers} Holders
+                        {totalUsers}00 Holders
 
                       </p>
 
