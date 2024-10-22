@@ -7,7 +7,7 @@ const bot = new Telegraf(process.env.REACT_APP_TELEGRAM_BOT_TOKEN);
 
 const welcomeMessage = (user) => {
   const userName = user.username ? `@${user.username}` : user.first_name;
-  return `Hey ${userName}, Welcome to [$BIRR](${community_link})!\n\n` +
+  return `Hey ${userName}, Welcome to [BIRR 💎](${community_link})!\n\n` +
     "Start building your financial future today!\n\n" +
     "Invite your friends to join the fun and watch your rewards multiply as you rise to the top together!";
 };
