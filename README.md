@@ -237,13 +237,6 @@ This is a private project. For inquiries, please contact the project owner.
 For support and updates, join our community:
 - Telegram Community: https://t.me/+p9ThUnIaaV0wYzZk
 
-## 🎯 Roadmap
-
-- [ ] Additional task categories
-- [ ] Enhanced leaderboard features
-- [ ] New boost types
-- [ ] Achievement system expansion
-- [ ] Mini-games integration
 
 ---
 
